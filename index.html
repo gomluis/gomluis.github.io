@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ko" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GomLuis AI Hub</title>
+  <meta name="description" content="심플한 AI 공부 자료 및 유용한 링크 모음">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Pretendard Font & FontAwesome Icons -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    body {
+      font-family: 'Pretendard', sans-serif;
+    }
+    .clean-card {
+      transition: all 0.2s ease;
+    }
+    .clean-card:hover {
+      transform: translateY(-2px);
+      border-color: #3b82f6;
+    }
+  </style>
+</head>
+<body class="bg-[#0f172a] text-slate-200 min-h-screen flex flex-col antialiased">
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="border-b border-slate-800 bg-[#0f172a]/90 backdrop-blur sticky top-0 z-40">
+    <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+      
+      <!-- Logo -->
+      <a href="#" class="flex items-center space-x-2.5 font-bold text-white text-lg">
+        <span class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white text-sm">
+          <i class="fa-solid fa-brain"></i>
+        </span>
+        <span>GomLuis <span class="text-blue-400">AI</span></span>
+      </a>
+
+      <!-- Main Tabs (3 Simple Views) -->
+      <nav class="flex items-center bg-slate-800/80 p-1 rounded-xl border border-slate-700/60 text-xs sm:text-sm font-medium">
+        <button onclick="switchMainTab('links')" id="tabBtn-links" 
+                class="px-3.5 py-1.5 rounded-lg transition-all bg-blue-600 text-white shadow">
+          <i class="fa-solid fa-link mr-1"></i> 링크 모음
+        </button>
+        <button onclick="switchMainTab('notes')" id="tabBtn-notes" 
+                class="px-3.5 py-1.5 rounded-lg transition-all text-slate-400 hover:text-white">
+          <i class="fa-solid fa-book-open mr-1"></i> 공부 노트
+        </button>
+        <button onclick="switchMainTab('roadmap')" id="tabBtn-roadmap" 
+                class="px-3.5 py-1.5 rounded-lg transition-all text-slate-400 hover:text-white">
+          <i class="fa-solid fa-check mr-1"></i> 로드맵
+        </button>
+      </nav>
+
+      <!-- GitHub Icon -->
+      <a href="https://github.com/gomluis" target="_blank" rel="noopener noreferrer" 
+         class="text-slate-400 hover:text-white transition-colors p-2 text-lg" title="GitHub 프로필">
+        <i class="fa-brands fa-github"></i>
+      </a>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT AREA ==================== -->
+  <main class="flex-grow max-w-4xl mx-auto px-4 py-8 w-full">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: LINKS (DEFAULT & MINIMAL)           -->
+    <!-- ========================================== -->
+    <div id="view-links" class="space-y-6">
+      
+      <!-- Simple Title & Search -->
+      <div class="text-center py-4">
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-white mb-2">AI 자료 & 유용한 링크</h1>
+        <p class="text-sm text-slate-400">자주 쓰는 인공지능 도구와 필수 사이트 모음</p>
+
+        <!-- Search Bar -->
+        <div class="max-w-lg mx-auto relative mt-5">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+          <input type="text" id="searchInput" 
+                 placeholder="이름이나 키워드 검색 (예: GPT, 강의, 파이토치)..." 
+                 class="w-full pl-10 pr-4 py-2.5 bg-slate-800/70 border border-slate-700 rounded-xl text-sm text-slate-100 placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-colors">
+        </div>
+
+        <!-- Category Buttons (Clean Pills) -->
+        <div class="flex flex-wrap justify-center gap-2 mt-4" id="categoryButtons">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+      <!-- Links Grid -->
+      <div id="linksContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="emptySearch" class="hidden text-center py-12 text-slate-500 text-sm">
+        검색 결과가 없습니다.
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: STUDY NOTES (CLEAN ACCORDION)       -->
+    <!-- ========================================== -->
+    <div id="view-notes" class="hidden space-y-4">
+      <div class="mb-4">
+        <h2 class="text-xl font-bold text-white">📝 AI 핵심 공부 노트</h2>
+        <p class="text-xs text-slate-400 mt-1">기억해두면 좋은 기초 개념과 구조 요약</p>
+      </div>
+
+      <div class="space-y-3">
+        <!-- Note 1 -->
+        <details class="group bg-slate-800/60 border border-slate-700/80 rounded-xl p-4 cursor-pointer" open>
+          <summary class="flex items-center justify-between font-semibold text-white list-none">
+            <span class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs">1</span>
+              Transformer & Self-Attention 원리
+            </span>
+            <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <div class="mt-3 text-xs sm:text-sm text-slate-300 leading-relaxed space-y-2 pt-2 border-t border-slate-700/60">
+            <p>단어 간의 관계를 한 번에 병렬로 계산하는 최신 언어 모델의 뼈대입니다.</p>
+            <div class="p-2.5 bg-slate-900 rounded-lg font-mono text-xs text-blue-300">
+              Attention(Q, K, V) = softmax(QKᵀ / √d) V
+            </div>
+            <p class="text-slate-400">• <b>Q(Query)</b>: 내가 찾는 단어 / <b>K(Key)</b>: 비교할 대상 단어 / <b>V(Value)</b>: 단어의 실제 의미 벡터</p>
+          </div>
+        </details>
+
+        <!-- Note 2 -->
+        <details class="group bg-slate-800/60 border border-slate-700/80 rounded-xl p-4 cursor-pointer">
+          <summary class="flex items-center justify-between font-semibold text-white list-none">
+            <span class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs">2</span>
+              RAG (검색 증강 생성) 아키텍처
+            </span>
+            <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <div class="mt-3 text-xs sm:text-sm text-slate-300 leading-relaxed space-y-2 pt-2 border-t border-slate-700/60">
+            <p>모델의 거짓 답변(환각)을 줄이고 최신/내부 문서를 참고해 답변하도록 돕는 기술입니다.</p>
+            <ol class="list-decimal list-inside space-y-1 text-slate-400">
+              <li>문서를 여러 조각(Chunk)으로 쪼갭니다.</li>
+              <li>조각들을 벡터(숫자 배열)로 변환해 Vector DB에 저장합니다.</li>
+              <li>사용자가 질문하면 가장 관련 있는 조각을 찾아옵니다.</li>
+              <li>찾아온 내용과 함께 질문을 LLM에 넘겨 정확한 답변을 얻습니다.</li>
+            </ol>
+          </div>
+        </details>
+
+        <!-- Note 3 -->
+        <details class="group bg-slate-800/60 border border-slate-700/80 rounded-xl p-4 cursor-pointer">
+          <summary class="flex items-center justify-between font-semibold text-white list-none">
+            <span class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs">3</span>
+              LoRA 파인튜닝 (PEFT)
+            </span>
+            <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <div class="mt-3 text-xs sm:text-sm text-slate-300 leading-relaxed space-y-2 pt-2 border-t border-slate-700/60">
+            <p>거대한 AI 모델의 전체 가중치를 다 고치지 않고, 아주 작은 추가 행렬(A, B)만 훈련시켜 적은 그래픽카드 메모리로 원하는 목적에 맞게 맞춤 학습시키는 기법입니다.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: ROADMAP (SIMPLE CHECKLIST)          -->
+    <!-- ========================================== -->
+    <div id="view-roadmap" class="hidden space-y-4">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h2 class="text-xl font-bold text-white">🎯 AI 공부 단계별 체크리스트</h2>
+          <p class="text-xs text-slate-400 mt-1">완료한 항목을 클릭하여 진도를 체크해 보세요.</p>
+        </div>
+        <span id="roadmapProgressText" class="text-xs font-mono px-2.5 py-1 bg-blue-950 text-blue-400 border border-blue-800/60 rounded-lg">
+          0 / 6 완료
+        </span>
+      </div>
+
+      <div class="space-y-2" id="roadmapContainer">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ==================== SIMPLE FOOTER ==================== -->
+  <footer class="border-t border-slate-800/80 py-6 text-center text-xs text-slate-500">
+    <p>GomLuis AI Archive • Hosted on GitHub Pages</p>
+  </footer>
+
+  <!-- ==================== SCRIPT ==================== -->
+  <script>
+    // 1. DATA: Clean curated list
+    const linksData = [
+      // Models
+      { name: "ChatGPT", category: "models", catName: "AI 모델", url: "https://chatgpt.com", desc: "OpenAI 대화형 인공지능 (GPT-4o)", icon: "fa-bolt" },
+      { name: "Claude", category: "models", catName: "AI 모델", url: "https://claude.ai", desc: "Anthropic의 정교한 코딩 & 문서 분석 AI", icon: "fa-comment" },
+      { name: "Google AI Studio", category: "models", catName: "AI 모델", url: "https://aistudio.google.com", desc: "Gemini 모델 테스트 및 무료 API 발급", icon: "fa-wand-magic-sparkles" },
+      { name: "Hugging Face", category: "models", catName: "오픈소스", url: "https://huggingface.co", desc: "오픈소스 AI 모델, 데이터셋, 웹 데모", icon: "fa-face-smile" },
+
+      // Courses
+      { name: "DeepLearning.AI", category: "courses", catName: "학습 코스", url: "https://www.deeplearning.ai", desc: "앤드류 응 교수의 실전 딥러닝/LLM 강의", icon: "fa-graduation-cap" },
+      { name: "Fast.ai", category: "courses", catName: "학습 코스", url: "https://course.fast.ai", desc: "코드 구현 중심으로 배우는 실전 딥러닝", icon: "fa-rocket" },
+      { name: "모두를 위한 딥러닝", category: "courses", catName: "기초 입문", url: "https://deeplearningzerotoall.github.io", desc: "PyTorch 기반 한국어 무료 딥러닝 입문 코스", icon: "fa-chalkboard-user" },
+
+      // Tools
+      { name: "Google Colab", category: "tools", catName: "개발 도구", url: "https://colab.research.google.com", desc: "무료 클라우드 GPU 제공 주피터 노트북", icon: "fa-code" },
+      { name: "Ollama", category: "tools", catName: "개발 도구", url: "https://ollama.com", desc: "내 컴퓨터에서 로컬 오픈소스 LLM 실행", icon: "fa-terminal" },
+      { name: "LangChain", category: "tools", catName: "개발 도구", url: "https://www.langchain.com", desc: "LLM 및 RAG 애플리케이션 개발 프레임워크", icon: "fa-cubes" },
+
+      // Papers
+      { name: "Papers with Code", category: "papers", catName: "논문/코드", url: "https://paperswithcode.com", desc: "논문과 깃허브 오픈소스 코드가 매칭된 사이트", icon: "fa-file-lines" },
+      { name: "arXiv (cs.AI)", category: "papers", catName: "논문", url: "https://arxiv.org/list/cs.AI/recent", desc: "최신 AI 연구 논문이 가장 먼저 올라오는 곳", icon: "fa-newspaper" }
+    ];
+
+    const categories = [
+      { id: "all", label: "전체보기" },
+      { id: "models", label: "🤖 AI 모델" },
+      { id: "courses", label: "📚 학습 코스" },
+      { id: "tools", label: "🛠️ 개발 도구" },
+      { id: "papers", label: "📄 논문" }
+    ];
+
+    const roadmapItems = [
+      "파이썬 기초 문법 및 데이터 분석 라이브러리(NumPy, Pandas)",
+      "머신러닝 & 딥러닝 기본 원리 (경사하강법, 인공신경망)",
+      "PyTorch로 간단한 신경망 모델 직접 만들어보기",
+      "Transformer 논문 아키텍처 및 Self-Attention 이해",
+      "프롬프트 엔지니어링 및 오픈소스 LLM(Ollama) 로컬 실행",
+      "RAG(검색 증강 생성) 파이프라인 실습해보기"
+    ];
+
+    let currentCategory = "all";
+    let searchQuery = "";
+
+    // TAB SWITCHING
+    window.switchMainTab = function(tabName) {
+      ['links', 'notes', 'roadmap'].forEach(t => {
+        const view = document.getElementById(`view-${t}`);
+        const btn = document.getElementById(`tabBtn-${t}`);
+        if (t === tabName) {
+          view.classList.remove('hidden');
+          btn.className = "px-3.5 py-1.5 rounded-lg transition-all bg-blue-600 text-white shadow";
+        } else {
+          view.classList.add('hidden');
+          btn.className = "px-3.5 py-1.5 rounded-lg transition-all text-slate-400 hover:text-white";
+        }
+      });
+    };
+
+    // RENDER CATEGORIES
+    function renderCategoryButtons() {
+      const container = document.getElementById("categoryButtons");
+      container.innerHTML = categories.map(c => `
+        <button onclick="setCategory('${c.id}')"
+                class="px-3 py-1 rounded-full text-xs transition-colors ${
+                  currentCategory === c.id 
+                    ? 'bg-blue-600 text-white font-medium' 
+                    : 'bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-700/60'
+                }">
+          ${c.label}
+        </button>
+      `).join("");
+    }
+
+    window.setCategory = function(catId) {
+      currentCategory = catId;
+      renderCategoryButtons();
+      renderLinks();
+    };
+
+    // RENDER LINKS
+    function renderLinks() {
+      const container = document.getElementById("linksContainer");
+      const emptyState = document.getElementById("emptySearch");
+
+      const filtered = linksData.filter(item => {
+        const matchesCategory = currentCategory === "all" || item.category === currentCategory;
+        const matchesSearch = searchQuery === "" || 
+          item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.desc.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesCategory && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = "";
+        emptyState.classList.remove("hidden");
+        return;
+      }
+
+      emptyState.classList.add("hidden");
+      container.innerHTML = filtered.map(item => `
+        <a href="${item.url}" target="_blank" rel="noopener noreferrer" 
+           class="clean-card block p-4 bg-slate-800/50 hover:bg-slate-800/90 border border-slate-700/70 rounded-xl group">
+          <div class="flex items-start justify-between gap-3">
+            <div class="flex items-start gap-3">
+              <div class="w-9 h-9 rounded-lg bg-slate-700/60 flex items-center justify-center text-slate-300 text-sm group-hover:bg-blue-600 group-hover:text-white transition-colors shrink-0">
+                <i class="fa-solid ${item.icon}"></i>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">${item.name}</h3>
+                  <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-900 text-slate-400">${item.catName}</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-1 line-clamp-1">${item.desc}</p>
+              </div>
+            </div>
+            <i class="fa-solid fa-arrow-up-right-from-square text-xs text-slate-500 group-hover:text-blue-400 transition-colors pt-1"></i>
+          </div>
+        </a>
+      `).join("");
+    }
+
+    // SEARCH LISTENER
+    document.getElementById("searchInput").addEventListener("input", (e) => {
+      searchQuery = e.target.value.trim();
+      renderLinks();
+    });
+
+    // ROADMAP
+    function initRoadmap() {
+      const saved = JSON.parse(localStorage.getItem("gomluis_simple_roadmap") || "{}");
+      const container = document.getElementById("roadmapContainer");
+
+      function updateStats() {
+        const currentSaved = JSON.parse(localStorage.getItem("gomluis_simple_roadmap") || "{}");
+        const checked = Object.values(currentSaved).filter(Boolean).length;
+        document.getElementById("roadmapProgressText").textContent = `${checked} / ${roadmapItems.length} 완료`;
+      }
+
+      container.innerHTML = roadmapItems.map((text, i) => {
+        const id = `item_${i}`;
+        const isChecked = saved[id] ? "checked" : "";
+        return `
+          <label class="flex items-center gap-3 p-3 bg-slate-800/40 border border-slate-700/60 rounded-xl cursor-pointer hover:bg-slate-800/80 transition-colors">
+            <input type="checkbox" id="${id}" ${isChecked} 
+                   class="w-4 h-4 rounded text-blue-600 bg-slate-900 border-slate-700 focus:ring-0 cursor-pointer"
+                   onchange="toggleCheck('${id}')">
+            <span class="text-xs sm:text-sm text-slate-300 select-none">${text}</span>
+          </label>
+        `;
+      }).join("");
+
+      window.toggleCheck = function(id) {
+        const current = JSON.parse(localStorage.getItem("gomluis_simple_roadmap") || "{}");
+        current[id] = !current[id];
+        localStorage.setItem("gomluis_simple_roadmap", JSON.stringify(current));
+        updateStats();
+      };
+
+      updateStats();
+    }
+
+    // INIT
+    renderCategoryButtons();
+    renderLinks();
+    initRoadmap();
+  </script>
+</body>
+</html>
