@@ -21,9 +21,10 @@
     }
   </script>
 
-  <!-- Pretendard Font & FontAwesome Icons -->
+  <!-- Pretendard Font & FontAwesome Icons & Marked.js -->
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <style>
     body {
@@ -35,6 +36,54 @@
     .clean-card:hover {
       transform: translateY(-2px);
       border-color: #3b82f6;
+    }
+    /* Markdown Body Styling in Cards */
+    .markdown-content h1, .markdown-content h2, .markdown-content h3 {
+      color: #ffffff;
+      font-weight: 700;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .markdown-content h1 { font-size: 1.2rem; }
+    .markdown-content h2 { font-size: 1.05rem; }
+    .markdown-content h3 { font-size: 0.95rem; }
+    .markdown-content p { margin-bottom: 0.5rem; line-height: 1.6; }
+    .markdown-content ul, .markdown-content ol {
+      padding-left: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+    .markdown-content ul { list-style-type: disc; }
+    .markdown-content ol { list-style-type: decimal; }
+    .markdown-content li { margin-bottom: 0.25rem; }
+    .markdown-content code {
+      background-color: #0b0f19;
+      color: #60a5fa;
+      padding: 0.15rem 0.4rem;
+      border-radius: 0.375rem;
+      font-family: monospace;
+      font-size: 0.85em;
+    }
+    .markdown-content pre {
+      background-color: #0b0f19;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      margin-bottom: 0.75rem;
+      border: 1px solid #1e293b;
+    }
+    .markdown-content blockquote {
+      border-left: 3px solid #3b82f6;
+      padding-left: 0.75rem;
+      color: #94a3b8;
+      margin: 0.75rem 0;
+    }
+    .markdown-content a {
+      color: #60a5fa;
+      text-decoration: underline;
+    }
+    .markdown-content hr {
+      border-color: #334155;
+      margin: 1rem 0;
     }
   </style>
 </head>
@@ -115,95 +164,35 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- TAB 2: STUDY NOTES (CLEAN ACCORDION)       -->
+    <!-- TAB 2: STUDY NOTES (DYNAMIC MARKDOWN)      -->
     <!-- ========================================== -->
     <div id="view-notes" class="hidden space-y-4">
-      <div class="mb-4">
-        <h2 class="text-xl font-bold text-white">📝 AI 핵심 공부 노트</h2>
-        <p class="text-xs text-slate-400 mt-1">기억해두면 좋은 기초 개념과 구조 요약</p>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-book-open text-blue-400"></i> AI 공부 노트
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">
+            깃허브 <code class="text-blue-400 font-mono bg-slate-900 px-1 py-0.5 rounded">notes/</code> 폴더에 올라온 마크다운(.md) 문서를 자동으로 불러옵니다.
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="loadMarkdownNotes(true)" class="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 px-2.5 py-1.5 rounded-lg border border-slate-700 transition-colors">
+            <i class="fa-solid fa-rotate-right text-xs"></i> 새로고침
+          </button>
+          <a href="https://github.com/gomluis/gomluis.github.io/tree/main/notes" target="_blank" 
+             class="inline-flex items-center gap-1.5 text-xs text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg border border-slate-700 transition-colors">
+            <i class="fa-solid fa-folder-open text-blue-400"></i> notes 폴더
+          </a>
+        </div>
       </div>
 
-      <div class="space-y-3">
-        <!-- Note 1: YouTube Shorts Summary -->
-        <details class="group bg-slate-800/60 border border-slate-700/80 rounded-xl p-4 cursor-pointer" open>
-          <summary class="flex items-center justify-between font-semibold text-white list-none">
-            <span class="flex items-center gap-2">
-              <span class="w-6 h-6 rounded bg-red-500/20 text-red-400 flex items-center justify-center text-xs">
-                <i class="fa-brands fa-youtube"></i>
-              </span>
-              클로드 코드(Claude Code) 한도 절약 5가지 핵심 요약
-            </span>
-            <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-open:rotate-180 transition-transform"></i>
-          </summary>
-          <div class="mt-3 text-xs sm:text-sm text-slate-300 leading-relaxed space-y-2 pt-2 border-t border-slate-700/60">
-            <p class="text-slate-400 font-medium">클로드 코드를 쓸 때 사용량 한도가 유독 빨리 닳는다면 꼭 알아야 할 5가지 관리 팁입니다.</p>
-            <ul class="space-y-2 text-slate-300">
-              <li>• <b class="text-white"><code class="bg-slate-900 px-1.5 py-0.5 rounded text-blue-400">/usage</code> (내역 확인)</b> : 내 한도를 뭐가 먹고 있는지(스킬, 서브에이전트, MCP 등) 상세 비중 확인</li>
-              <li>• <b class="text-white"><code class="bg-slate-900 px-1.5 py-0.5 rounded text-blue-400">/context</code> (대화량 점검)</b> : 현재 대화 맥락(Context)이 얼마나 찼는지 확인하고 줄일 곳 찾기</li>
-              <li>• <b class="text-white"><code class="bg-slate-900 px-1.5 py-0.5 rounded text-blue-400">/compact</code> & <code class="bg-slate-900 px-1.5 py-0.5 rounded text-blue-400">/clear</code> (맥락 압축)</b> : 대화가 길어지면 질문 하나에도 수만 토큰이 소모되므로 압축하거나 새 작업 시 세션 초기화</li>
-              <li>• <b class="text-white">자리만 차지하는 스킬/도구 정리</b> : 쓰지 않는 MCP 서버나 무거운 서브에이전트 스킬 찾아 비활성화</li>
-              <li>• <b class="text-white">웹과 터미널 한도 공유 인지</b> : <code class="bg-slate-900 px-1.5 py-0.5 rounded text-slate-400">claude.ai</code>(웹)과 터미널 클로드 코드가 동일한 사용량 풀(5시간 롤링 윈도우)을 공유함을 인지</li>
-            </ul>
-            <div class="pt-2">
-              <a href="https://youtube.com/shorts/5HgN-Bw9bb8" target="_blank" rel="noopener noreferrer" 
-                 class="inline-flex items-center gap-1.5 text-xs text-red-400 hover:text-red-300 font-semibold transition-colors bg-red-950/40 px-3 py-1.5 rounded-lg border border-red-800/40">
-                <i class="fa-brands fa-youtube"></i> 숏츠 영상 원본 보러가기 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-              </a>
-            </div>
-          </div>
-        </details>
-
-        <!-- Note 2 -->
-        <details class="group bg-slate-800/60 border border-slate-700/80 rounded-xl p-4 cursor-pointer">
-          <summary class="flex items-center justify-between font-semibold text-white list-none">
-            <span class="flex items-center gap-2">
-              <span class="w-6 h-6 rounded bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs">1</span>
-              Transformer & Self-Attention 원리
-            </span>
-            <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-open:rotate-180 transition-transform"></i>
-          </summary>
-          <div class="mt-3 text-xs sm:text-sm text-slate-300 leading-relaxed space-y-2 pt-2 border-t border-slate-700/60">
-            <p>단어 간의 관계를 한 번에 병렬로 계산하는 최신 언어 모델의 뼈대입니다.</p>
-            <div class="p-2.5 bg-slate-900 rounded-lg font-mono text-xs text-blue-300">
-              Attention(Q, K, V) = softmax(QKᵀ / √d) V
-            </div>
-            <p class="text-slate-400">• <b>Q(Query)</b>: 내가 찾는 단어 / <b>K(Key)</b>: 비교할 대상 단어 / <b>V(Value)</b>: 단어의 실제 의미 벡터</p>
-          </div>
-        </details>
-
-        <!-- Note 2 -->
-        <details class="group bg-slate-800/60 border border-slate-700/80 rounded-xl p-4 cursor-pointer">
-          <summary class="flex items-center justify-between font-semibold text-white list-none">
-            <span class="flex items-center gap-2">
-              <span class="w-6 h-6 rounded bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs">2</span>
-              RAG (검색 증강 생성) 아키텍처
-            </span>
-            <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-open:rotate-180 transition-transform"></i>
-          </summary>
-          <div class="mt-3 text-xs sm:text-sm text-slate-300 leading-relaxed space-y-2 pt-2 border-t border-slate-700/60">
-            <p>모델의 거짓 답변(환각)을 줄이고 최신/내부 문서를 참고해 답변하도록 돕는 기술입니다.</p>
-            <ol class="list-decimal list-inside space-y-1 text-slate-400">
-              <li>문서를 여러 조각(Chunk)으로 쪼갭니다.</li>
-              <li>조각들을 벡터(숫자 배열)로 변환해 Vector DB에 저장합니다.</li>
-              <li>사용자가 질문하면 가장 관련 있는 조각을 찾아옵니다.</li>
-              <li>찾아온 내용과 함께 질문을 LLM에 넘겨 정확한 답변을 얻습니다.</li>
-            </ol>
-          </div>
-        </details>
-
-        <!-- Note 3 -->
-        <details class="group bg-slate-800/60 border border-slate-700/80 rounded-xl p-4 cursor-pointer">
-          <summary class="flex items-center justify-between font-semibold text-white list-none">
-            <span class="flex items-center gap-2">
-              <span class="w-6 h-6 rounded bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs">3</span>
-              LoRA 파인튜닝 (PEFT)
-            </span>
-            <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-open:rotate-180 transition-transform"></i>
-          </summary>
-          <div class="mt-3 text-xs sm:text-sm text-slate-300 leading-relaxed space-y-2 pt-2 border-t border-slate-700/60">
-            <p>거대한 AI 모델의 전체 가중치를 다 고치지 않고, 아주 작은 추가 행렬(A, B)만 훈련시켜 적은 그래픽카드 메모리로 원하는 목적에 맞게 맞춤 학습시키는 기법입니다.</p>
-          </div>
-        </details>
+      <!-- Dynamic Markdown Notes Container -->
+      <div id="dynamicNotesContainer" class="space-y-3">
+        <div class="text-center py-12 text-slate-500 text-xs">
+          <i class="fa-solid fa-spinner fa-spin text-lg text-blue-500 mb-2"></i><br>
+          깃허브에서 공부 노트를 불러오는 중입니다...
+        </div>
       </div>
     </div>
 
@@ -289,12 +278,101 @@
         if (t === tabName) {
           view.classList.remove('hidden');
           btn.className = "px-3.5 py-1.5 rounded-lg transition-all bg-blue-600 text-white shadow";
+          if (tabName === 'notes') {
+            loadMarkdownNotes();
+          }
         } else {
           view.classList.add('hidden');
           btn.className = "px-3.5 py-1.5 rounded-lg transition-all text-slate-400 hover:text-white";
         }
       });
     };
+
+    // DYNAMIC MARKDOWN NOTES LOADER
+    let notesLoaded = false;
+    async function loadMarkdownNotes(force = false) {
+      if (notesLoaded && !force) return;
+      const container = document.getElementById("dynamicNotesContainer");
+      container.innerHTML = `
+        <div class="text-center py-10 text-slate-500 text-xs">
+          <i class="fa-solid fa-spinner fa-spin text-base text-blue-500 mb-2"></i><br>
+          깃허브에서 최신 공부 노트를 불러오는 중입니다...
+        </div>
+      `;
+
+      const owner = "gomluis";
+      const repo = "gomluis.github.io";
+
+      try {
+        const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/notes`);
+        if (!res.ok) throw new Error("GitHub API status " + res.status);
+        const files = await res.json();
+
+        const mdFiles = files.filter(f => f.name.endsWith('.md')).sort((a,b) => a.name.localeCompare(b.name));
+
+        if (mdFiles.length === 0) {
+          container.innerHTML = `
+            <div class="text-center py-12 bg-slate-800/30 rounded-xl border border-slate-700/60 text-slate-400 text-xs">
+              <i class="fa-regular fa-folder-open text-2xl text-slate-500 mb-2 block"></i>
+              아직 등록된 마크다운(.md) 파일이 없습니다.<br>
+              깃허브 <code class="text-blue-400 font-mono">notes/</code> 폴더에 파일을 추가해 보세요!
+            </div>
+          `;
+          notesLoaded = true;
+          return;
+        }
+
+        const noteCards = await Promise.all(mdFiles.map(async (file, idx) => {
+          const rawRes = await fetch(file.download_url);
+          const mdText = await rawRes.text();
+
+          // Extract title from first # line or filename
+          const lines = mdText.split('\n');
+          let title = file.name.replace(/\.md$/, '').replace(/^\d+[_]/, '');
+          const firstHeader = lines.find(l => l.trim().startsWith('# '));
+          if (firstHeader) {
+            title = firstHeader.replace(/^#\s+/, '').trim();
+          }
+
+          const parsedHtml = (typeof marked !== 'undefined') ? marked.parse(mdText) : `<pre>${mdText}</pre>`;
+
+          return `
+            <details class="group bg-slate-800/60 border border-slate-700/80 rounded-xl p-4 cursor-pointer" ${idx === 0 ? 'open' : ''}>
+              <summary class="flex items-center justify-between font-semibold text-white list-none">
+                <span class="flex items-center gap-2 text-sm sm:text-base">
+                  <span class="w-6 h-6 rounded bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-mono">${idx + 1}</span>
+                  ${title}
+                </span>
+                <div class="flex items-center gap-2">
+                  <a href="${file.html_url}" target="_blank" onclick="event.stopPropagation()" 
+                     class="text-slate-400 hover:text-blue-400 text-xs px-2 py-0.5 rounded bg-slate-900 border border-slate-700 transition-colors" title="깃허브에서 원본 보기">
+                    <i class="fa-brands fa-github mr-1"></i>원본
+                  </a>
+                  <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-open:rotate-180 transition-transform"></i>
+                </div>
+              </summary>
+              <div class="markdown-content mt-4 text-xs sm:text-sm text-slate-300 leading-relaxed pt-3 border-t border-slate-700/60">
+                ${parsedHtml}
+              </div>
+            </details>
+          `;
+        }));
+
+        container.innerHTML = noteCards.join('');
+        notesLoaded = true;
+      } catch (err) {
+        console.error("Notes load error:", err);
+        container.innerHTML = `
+          <div class="p-4 bg-amber-950/30 border border-amber-800/50 rounded-xl text-xs text-amber-300">
+            <i class="fa-solid fa-triangle-exclamation mr-1.5"></i>
+            깃허브에서 노트를 불러오지 못했습니다. (API 한도 초과 또는 로컬 환경)<br>
+            <a href="https://github.com/${owner}/${repo}/tree/main/notes" target="_blank" class="underline mt-1 inline-block text-amber-200">
+              👉 깃허브 notes 폴더에서 직접 보기
+            </a>
+          </div>
+        `;
+      }
+    }
 
     // RENDER CATEGORIES
     function renderCategoryButtons() {
