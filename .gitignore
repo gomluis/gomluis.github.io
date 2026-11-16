@@ -1,0 +1,8 @@
+# 임시 및 압축 파일
+*.zip
+gomluis.github.io-main.zip
+
+# 작업 노트 및 로컬 설정
+IDEAS.md
+.DS_Store
+Thumbs.db
