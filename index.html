@@ -124,8 +124,37 @@
       </div>
 
       <div class="space-y-3">
-        <!-- Note 1 -->
+        <!-- Note 1: YouTube Shorts Summary -->
         <details class="group bg-slate-800/60 border border-slate-700/80 rounded-xl p-4 cursor-pointer" open>
+          <summary class="flex items-center justify-between font-semibold text-white list-none">
+            <span class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded bg-red-500/20 text-red-400 flex items-center justify-center text-xs">
+                <i class="fa-brands fa-youtube"></i>
+              </span>
+              클로드 코드(Claude Code) 한도 절약 5가지 핵심 요약
+            </span>
+            <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <div class="mt-3 text-xs sm:text-sm text-slate-300 leading-relaxed space-y-2 pt-2 border-t border-slate-700/60">
+            <p class="text-slate-400 font-medium">클로드 코드를 쓸 때 사용량 한도가 유독 빨리 닳는다면 꼭 알아야 할 5가지 관리 팁입니다.</p>
+            <ul class="space-y-2 text-slate-300">
+              <li>• <b class="text-white"><code class="bg-slate-900 px-1.5 py-0.5 rounded text-blue-400">/usage</code> (내역 확인)</b> : 내 한도를 뭐가 먹고 있는지(스킬, 서브에이전트, MCP 등) 상세 비중 확인</li>
+              <li>• <b class="text-white"><code class="bg-slate-900 px-1.5 py-0.5 rounded text-blue-400">/context</code> (대화량 점검)</b> : 현재 대화 맥락(Context)이 얼마나 찼는지 확인하고 줄일 곳 찾기</li>
+              <li>• <b class="text-white"><code class="bg-slate-900 px-1.5 py-0.5 rounded text-blue-400">/compact</code> & <code class="bg-slate-900 px-1.5 py-0.5 rounded text-blue-400">/clear</code> (맥락 압축)</b> : 대화가 길어지면 질문 하나에도 수만 토큰이 소모되므로 압축하거나 새 작업 시 세션 초기화</li>
+              <li>• <b class="text-white">자리만 차지하는 스킬/도구 정리</b> : 쓰지 않는 MCP 서버나 무거운 서브에이전트 스킬 찾아 비활성화</li>
+              <li>• <b class="text-white">웹과 터미널 한도 공유 인지</b> : <code class="bg-slate-900 px-1.5 py-0.5 rounded text-slate-400">claude.ai</code>(웹)과 터미널 클로드 코드가 동일한 사용량 풀(5시간 롤링 윈도우)을 공유함을 인지</li>
+            </ul>
+            <div class="pt-2">
+              <a href="https://youtube.com/shorts/5HgN-Bw9bb8" target="_blank" rel="noopener noreferrer" 
+                 class="inline-flex items-center gap-1.5 text-xs text-red-400 hover:text-red-300 font-semibold transition-colors bg-red-950/40 px-3 py-1.5 rounded-lg border border-red-800/40">
+                <i class="fa-brands fa-youtube"></i> 숏츠 영상 원본 보러가기 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+              </a>
+            </div>
+          </div>
+        </details>
+
+        <!-- Note 2 -->
+        <details class="group bg-slate-800/60 border border-slate-700/80 rounded-xl p-4 cursor-pointer">
           <summary class="flex items-center justify-between font-semibold text-white list-none">
             <span class="flex items-center gap-2">
               <span class="w-6 h-6 rounded bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs">1</span>
@@ -208,6 +237,9 @@
   <script>
     // 1. DATA: Clean curated list
     const linksData = [
+      // Recommended YouTube & Shorts
+      { name: "클로드 코드 한도 절약 5가지 팁", category: "tools", catName: "유튜브 숏츠", url: "https://youtube.com/shorts/5HgN-Bw9bb8", desc: "터미널 AI 코딩 시 토큰과 한도 낭비를 막는 5가지 필수 명령어", icon: "fa-brands fa-youtube" },
+
       // Models
       { name: "ChatGPT", category: "models", catName: "AI 모델", url: "https://chatgpt.com", desc: "OpenAI 대화형 인공지능 (GPT-4o)", icon: "fa-bolt" },
       { name: "Claude", category: "models", catName: "AI 모델", url: "https://claude.ai", desc: "Anthropic의 정교한 코딩 & 문서 분석 AI", icon: "fa-comment" },
@@ -311,7 +343,7 @@
           <div class="flex items-start justify-between gap-3">
             <div class="flex items-start gap-3">
               <div class="w-9 h-9 rounded-lg bg-slate-700/60 flex items-center justify-center text-slate-300 text-sm group-hover:bg-blue-600 group-hover:text-white transition-colors shrink-0">
-                <i class="fa-solid ${item.icon}"></i>
+                <i class="${item.icon.includes(' ') ? item.icon : 'fa-solid ' + item.icon}"></i>
               </div>
               <div>
                 <div class="flex items-center gap-2">
