@@ -111,9 +111,9 @@
                 class="px-3.5 py-1.5 rounded-lg transition-all text-slate-400 hover:text-white">
           <i class="fa-solid fa-book-open mr-1"></i> 공부 노트
         </button>
-        <button onclick="switchMainTab('roadmap')" id="tabBtn-roadmap" 
+        <button onclick="switchMainTab('food')" id="tabBtn-food" 
                 class="px-3.5 py-1.5 rounded-lg transition-all text-slate-400 hover:text-white">
-          <i class="fa-solid fa-check mr-1"></i> 로드맵
+          <i class="fa-solid fa-utensils mr-1"></i> 맛집 모음
         </button>
       </nav>
 
@@ -197,21 +197,35 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- TAB 3: ROADMAP (SIMPLE CHECKLIST)          -->
+    <!-- TAB 3: FOOD REVIEWS (DYNAMIC MARKDOWN)     -->
     <!-- ========================================== -->
-    <div id="view-roadmap" class="hidden space-y-4">
-      <div class="flex items-center justify-between mb-4">
+    <div id="view-food" class="hidden space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
         <div>
-          <h2 class="text-xl font-bold text-white">🎯 AI 공부 단계별 체크리스트</h2>
-          <p class="text-xs text-slate-400 mt-1">완료한 항목을 클릭하여 진도를 체크해 보세요.</p>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-utensils text-amber-400"></i> 맛집 모음 & 리뷰
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">
+            깃허브 <code class="text-amber-400 font-mono bg-slate-900 px-1 py-0.5 rounded">food/</code> 폴더에 올린 맛집 영상과 기록을 자동으로 불러옵니다.
+          </p>
         </div>
-        <span id="roadmapProgressText" class="text-xs font-mono px-2.5 py-1 bg-blue-950 text-blue-400 border border-blue-800/60 rounded-lg">
-          0 / 6 완료
-        </span>
+        <div class="flex items-center gap-2">
+          <button onclick="loadFoodNotes(true)" class="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 px-2.5 py-1.5 rounded-lg border border-slate-700 transition-colors">
+            <i class="fa-solid fa-rotate-right text-xs"></i> 새로고침
+          </button>
+          <a href="https://github.com/gomluis/gomluis.github.io/tree/main/food" target="_blank" 
+             class="inline-flex items-center gap-1.5 text-xs text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg border border-slate-700 transition-colors">
+            <i class="fa-solid fa-folder-open text-amber-400"></i> food 폴더
+          </a>
+        </div>
       </div>
 
-      <div class="space-y-2" id="roadmapContainer">
-        <!-- Rendered via JS -->
+      <!-- Dynamic Food Markdown Container -->
+      <div id="dynamicFoodContainer" class="space-y-3">
+        <div class="text-center py-12 text-slate-500 text-xs">
+          <i class="fa-solid fa-spinner fa-spin text-lg text-amber-500 mb-2"></i><br>
+          깃허브에서 맛집 기록을 불러오는 중입니다...
+        </div>
       </div>
     </div>
 
@@ -238,27 +252,14 @@
       { name: "Hugging Face", category: "models", catName: "오픈소스", url: "https://huggingface.co", desc: "오픈소스 AI 모델, 데이터셋, 웹 데모", icon: "fa-face-smile" },
 
       // Tools
-      { name: "Google Colab", category: "tools", catName: "개발 도구", url: "https://colab.research.google.com", desc: "무료 클라우드 GPU 제공 주피터 노트북", icon: "fa-code" },
-
-      // Food & Restaurants
-      { name: "연보성 - 인천 부평 초가성비 중식당", category: "food", catName: "맛집 영상", url: "https://www.youtube.com/watch?v=nYPjRgTA2fE", desc: "📍 인천 부평구 부흥로334번길 63 | ⏰ 11:00~23:00 (2,3주 수 휴무) | 생전 처음 보는 놀라운 가격의 노포 중화요리 맛집 (그린바틀TV)", icon: "fa-solid fa-utensils" }
+      { name: "Google Colab", category: "tools", catName: "개발 도구", url: "https://colab.research.google.com", desc: "무료 클라우드 GPU 제공 주피터 노트북", icon: "fa-code" }
     ];
 
     const categories = [
       { id: "all", label: "전체보기" },
       { id: "models", label: "🤖 AI 모델" },
       { id: "tools", label: "🛠️ 개발 도구" },
-      { id: "media", label: "🎬 AI 영상" },
-      { id: "food", label: "🍜 맛집 영상" }
-    ];
-
-    const roadmapItems = [
-      "파이썬 기초 문법 및 데이터 분석 라이브러리(NumPy, Pandas)",
-      "머신러닝 & 딥러닝 기본 원리 (경사하강법, 인공신경망)",
-      "PyTorch로 간단한 신경망 모델 직접 만들어보기",
-      "Transformer 논문 아키텍처 및 Self-Attention 이해",
-      "프롬프트 엔지니어링 및 오픈소스 LLM(Ollama) 로컬 실행",
-      "RAG(검색 증강 생성) 파이프라인 실습해보기"
+      { id: "media", label: "🎬 영상 모음" }
     ];
 
     let currentCategory = "all";
@@ -266,7 +267,7 @@
 
     // TAB SWITCHING
     window.switchMainTab = function(tabName) {
-      ['links', 'notes', 'roadmap'].forEach(t => {
+      ['links', 'notes', 'food'].forEach(t => {
         const view = document.getElementById(`view-${t}`);
         const btn = document.getElementById(`tabBtn-${t}`);
         if (t === tabName) {
@@ -274,6 +275,8 @@
           btn.className = "px-3.5 py-1.5 rounded-lg transition-all bg-blue-600 text-white shadow";
           if (tabName === 'notes') {
             loadMarkdownNotes();
+          } else if (tabName === 'food') {
+            loadFoodNotes();
           }
         } else {
           view.classList.add('hidden');
@@ -368,6 +371,91 @@
       }
     }
 
+    // DYNAMIC FOOD NOTES LOADER
+    let foodLoaded = false;
+    async function loadFoodNotes(force = false) {
+      if (foodLoaded && !force) return;
+      const container = document.getElementById("dynamicFoodContainer");
+      container.innerHTML = `
+        <div class="text-center py-10 text-slate-500 text-xs">
+          <i class="fa-solid fa-spinner fa-spin text-base text-amber-500 mb-2"></i><br>
+          깃허브에서 맛집 기록을 불러오는 중입니다...
+        </div>
+      `;
+
+      const owner = "gomluis";
+      const repo = "gomluis.github.io";
+
+      try {
+        const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/food`);
+        if (!res.ok) throw new Error("GitHub API status " + res.status);
+        const files = await res.json();
+
+        const mdFiles = files.filter(f => f.name.endsWith('.md')).sort((a,b) => a.name.localeCompare(b.name));
+
+        if (mdFiles.length === 0) {
+          container.innerHTML = `
+            <div class="text-center py-12 bg-slate-800/30 rounded-xl border border-slate-700/60 text-slate-400 text-xs">
+              <i class="fa-solid fa-utensils text-2xl text-amber-500/50 mb-2 block"></i>
+              아직 등록된 맛집 기록(.md)이 없습니다.<br>
+              깃허브 <code class="text-amber-400 font-mono">food/</code> 폴더에 파일을 추가해 보세요!
+            </div>
+          `;
+          foodLoaded = true;
+          return;
+        }
+
+        const foodCards = await Promise.all(mdFiles.map(async (file, idx) => {
+          const rawRes = await fetch(file.download_url);
+          const mdText = await rawRes.text();
+
+          const lines = mdText.split('\n');
+          let title = file.name.replace(/\.md$/, '').replace(/^\d+[_]/, '');
+          const firstHeader = lines.find(l => l.trim().startsWith('# '));
+          if (firstHeader) {
+            title = firstHeader.replace(/^#\s+/, '').trim();
+          }
+
+          const parsedHtml = (typeof marked !== 'undefined') ? marked.parse(mdText) : `<pre>${mdText}</pre>`;
+
+          return `
+            <details class="group bg-slate-800/60 border border-slate-700/80 rounded-xl p-4 cursor-pointer" ${idx === 0 ? 'open' : ''}>
+              <summary class="flex items-center justify-between font-semibold text-white list-none">
+                <span class="flex items-center gap-2 text-sm sm:text-base">
+                  <span class="w-6 h-6 rounded bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-mono">${idx + 1}</span>
+                  ${title}
+                </span>
+                <div class="flex items-center gap-2">
+                  <a href="${file.html_url}" target="_blank" onclick="event.stopPropagation()" 
+                     class="text-slate-400 hover:text-amber-400 text-xs px-2 py-0.5 rounded bg-slate-900 border border-slate-700 transition-colors" title="깃허브에서 원본 보기">
+                    <i class="fa-brands fa-github mr-1"></i>원본
+                  </a>
+                  <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-open:rotate-180 transition-transform"></i>
+                </div>
+              </summary>
+              <div class="markdown-content mt-4 text-xs sm:text-sm text-slate-300 leading-relaxed pt-3 border-t border-slate-700/60">
+                ${parsedHtml}
+              </div>
+            </details>
+          `;
+        }));
+
+        container.innerHTML = foodCards.join('');
+        foodLoaded = true;
+      } catch (err) {
+        console.error("Food notes load error:", err);
+        container.innerHTML = `
+          <div class="p-4 bg-amber-950/30 border border-amber-800/50 rounded-xl text-xs text-amber-300">
+            <i class="fa-solid fa-triangle-exclamation mr-1.5"></i>
+            깃허브에서 맛집 기록을 불러오지 못했습니다. (API 한도 초과 또는 로컬 환경)<br>
+            <a href="https://github.com/${owner}/${repo}/tree/main/food" target="_blank" class="underline mt-1 inline-block text-amber-200">
+              👉 깃허브 food 폴더에서 직접 보기
+            </a>
+          </div>
+        `;
+      }
+    }
+
     // RENDER CATEGORIES
     function renderCategoryButtons() {
       const container = document.getElementById("categoryButtons");
@@ -437,44 +525,9 @@
       renderLinks();
     });
 
-    // ROADMAP
-    function initRoadmap() {
-      const saved = JSON.parse(localStorage.getItem("gomluis_simple_roadmap") || "{}");
-      const container = document.getElementById("roadmapContainer");
-
-      function updateStats() {
-        const currentSaved = JSON.parse(localStorage.getItem("gomluis_simple_roadmap") || "{}");
-        const checked = Object.values(currentSaved).filter(Boolean).length;
-        document.getElementById("roadmapProgressText").textContent = `${checked} / ${roadmapItems.length} 완료`;
-      }
-
-      container.innerHTML = roadmapItems.map((text, i) => {
-        const id = `item_${i}`;
-        const isChecked = saved[id] ? "checked" : "";
-        return `
-          <label class="flex items-center gap-3 p-3 bg-slate-800/40 border border-slate-700/60 rounded-xl cursor-pointer hover:bg-slate-800/80 transition-colors">
-            <input type="checkbox" id="${id}" ${isChecked} 
-                   class="w-4 h-4 rounded text-blue-600 bg-slate-900 border-slate-700 focus:ring-0 cursor-pointer"
-                   onchange="toggleCheck('${id}')">
-            <span class="text-xs sm:text-sm text-slate-300 select-none">${text}</span>
-          </label>
-        `;
-      }).join("");
-
-      window.toggleCheck = function(id) {
-        const current = JSON.parse(localStorage.getItem("gomluis_simple_roadmap") || "{}");
-        current[id] = !current[id];
-        localStorage.setItem("gomluis_simple_roadmap", JSON.stringify(current));
-        updateStats();
-      };
-
-      updateStats();
-    }
-
     // INIT
     renderCategoryButtons();
     renderLinks();
-    initRoadmap();
   </script>
 </body>
 </html>
