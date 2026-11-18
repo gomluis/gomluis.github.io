@@ -238,14 +238,18 @@
       { name: "Hugging Face", category: "models", catName: "오픈소스", url: "https://huggingface.co", desc: "오픈소스 AI 모델, 데이터셋, 웹 데모", icon: "fa-face-smile" },
 
       // Tools
-      { name: "Google Colab", category: "tools", catName: "개발 도구", url: "https://colab.research.google.com", desc: "무료 클라우드 GPU 제공 주피터 노트북", icon: "fa-code" }
+      { name: "Google Colab", category: "tools", catName: "개발 도구", url: "https://colab.research.google.com", desc: "무료 클라우드 GPU 제공 주피터 노트북", icon: "fa-code" },
+
+      // Food & Restaurants
+      { name: "연보성 - 인천 부평 초가성비 중식당", category: "food", catName: "맛집 영상", url: "https://www.youtube.com/watch?v=nYPjRgTA2fE", desc: "📍 인천 부평구 부흥로334번길 63 | ⏰ 11:00~23:00 (2,3주 수 휴무) | 생전 처음 보는 놀라운 가격의 노포 중화요리 맛집 (그린바틀TV)", icon: "fa-solid fa-utensils" }
     ];
 
     const categories = [
       { id: "all", label: "전체보기" },
       { id: "models", label: "🤖 AI 모델" },
       { id: "tools", label: "🛠️ 개발 도구" },
-      { id: "media", label: "🎬 영상 모음" }
+      { id: "media", label: "🎬 AI 영상" },
+      { id: "food", label: "🍜 맛집 영상" }
     ];
 
     const roadmapItems = [
@@ -418,7 +422,7 @@
                   <h3 class="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">${item.name}</h3>
                   <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-900 text-slate-400">${item.catName}</span>
                 </div>
-                <p class="text-xs text-slate-400 mt-1 line-clamp-1">${item.desc}</p>
+                <p class="text-xs text-slate-400 mt-1 line-clamp-2 sm:line-clamp-3 leading-relaxed">${item.desc}</p>
               </div>
             </div>
             <i class="fa-solid fa-arrow-up-right-from-square text-xs text-slate-500 group-hover:text-blue-400 transition-colors pt-1"></i>
