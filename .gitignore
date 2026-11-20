@@ -3,6 +3,7 @@
 gomluis.github.io-main.zip
 
 # 작업 노트 및 로컬 설정
+.agents/
 IDEAS.md
 .DS_Store
 Thumbs.db
