@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GomLuis AI Hub</title>
-  <meta name="description" content="심플한 AI 공부 자료 및 유용한 링크 모음">
+  <title>GomLuis Hub • AI & Life Archive</title>
+  <meta name="description" content="AI 필수 도구, 실전 개발 노트, 엄선한 일상의 기록을 모은 퍼스널 아카이브">
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -15,6 +15,16 @@
         extend: {
           fontFamily: {
             sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Fira Code', 'Consolas', 'monospace']
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              400: '#60a5fa',
+              500: '#3b82f6',
+              600: '#2563eb',
+              900: '#1e3a8a'
+            }
           }
         }
       }
@@ -28,160 +38,262 @@
 
   <style>
     body {
-      font-family: 'Pretendard', sans-serif;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      background-color: #090d16;
+      color: #e2e8f0;
+      letter-spacing: -0.015em;
     }
-    .clean-card {
-      transition: all 0.2s ease;
+
+    /* Ambient Subtle Background Grid */
+    .bg-grid-pattern {
+      background-size: 32px 32px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     }
-    .clean-card:hover {
+
+    /* Taste-Skill Micro-Interactions */
+    .taste-card {
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), 
+                  border-color 0.22s ease, 
+                  background-color 0.22s ease,
+                  box-shadow 0.22s ease;
+    }
+    .taste-card:hover {
       transform: translateY(-2px);
-      border-color: #3b82f6;
+      border-color: rgba(96, 165, 250, 0.4);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 15px -3px rgba(59, 130, 246, 0.1);
     }
-    /* Markdown Body Styling in Cards */
-    .markdown-content h1, .markdown-content h2, .markdown-content h3 {
-      color: #ffffff;
+    .taste-btn:active {
+      transform: scale(0.97);
+    }
+
+    /* Details Smooth Marker & Polish */
+    details > summary::-webkit-details-marker {
+      display: none;
+    }
+    details summary {
+      user-select: none;
+    }
+
+    /* Markdown Typography Styling (Linear-grade clean layout) */
+    .markdown-content {
+      line-height: 1.75;
+    }
+    .markdown-content h1 {
+      font-size: 1.25rem;
       font-weight: 700;
-      margin-top: 1rem;
-      margin-bottom: 0.5rem;
+      color: #f8fafc;
+      margin-top: 1.25rem;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
     }
-    .markdown-content h1 { font-size: 1.2rem; }
-    .markdown-content h2 { font-size: 1.05rem; }
-    .markdown-content h3 { font-size: 0.95rem; }
-    .markdown-content p { margin-bottom: 0.5rem; line-height: 1.6; }
-    .markdown-content ul, .markdown-content ol {
-      padding-left: 1.25rem;
+    .markdown-content h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-top: 1.25rem;
       margin-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 0.35rem;
+    }
+    .markdown-content h3 {
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: #93c5fd;
+      margin-top: 1rem;
+      margin-bottom: 0.35rem;
+    }
+    .markdown-content p {
+      margin-bottom: 0.75rem;
+      color: #cbd5e1;
+    }
+    .markdown-content ul, .markdown-content ol {
+      padding-left: 1.35rem;
+      margin-bottom: 0.75rem;
     }
     .markdown-content ul { list-style-type: disc; }
     .markdown-content ol { list-style-type: decimal; }
-    .markdown-content li { margin-bottom: 0.25rem; }
+    .markdown-content li {
+      margin-bottom: 0.35rem;
+      color: #cbd5e1;
+    }
     .markdown-content code {
-      background-color: #0b0f19;
-      color: #60a5fa;
-      padding: 0.15rem 0.4rem;
+      background-color: rgba(15, 23, 42, 0.85);
+      color: #93c5fd;
+      padding: 0.15rem 0.45rem;
       border-radius: 0.375rem;
-      font-family: monospace;
+      font-family: 'JetBrains Mono', Consolas, monospace;
       font-size: 0.85em;
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
     .markdown-content pre {
-      background-color: #0b0f19;
-      padding: 0.75rem;
-      border-radius: 0.5rem;
+      background-color: #070a12;
+      padding: 0.9rem 1rem;
+      border-radius: 0.65rem;
       overflow-x: auto;
-      margin-bottom: 0.75rem;
-      border: 1px solid #1e293b;
+      margin-top: 0.75rem;
+      margin-bottom: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .markdown-content pre code {
+      background-color: transparent;
+      padding: 0;
+      border: none;
+      color: #e2e8f0;
     }
     .markdown-content blockquote {
       border-left: 3px solid #3b82f6;
-      padding-left: 0.75rem;
+      background: rgba(30, 41, 59, 0.35);
+      padding: 0.75rem 1rem;
+      border-radius: 0 0.5rem 0.5rem 0;
       color: #94a3b8;
-      margin: 0.75rem 0;
+      margin: 0.85rem 0;
+      font-size: 0.92em;
     }
     .markdown-content a {
       color: #60a5fa;
       text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .markdown-content a:hover {
+      color: #93c5fd;
     }
     .markdown-content hr {
-      border-color: #334155;
-      margin: 1rem 0;
+      border-color: rgba(255, 255, 255, 0.08);
+      margin: 1.25rem 0;
     }
   </style>
 </head>
-<body class="bg-[#0f172a] text-slate-200 min-h-screen flex flex-col antialiased">
+<body class="min-h-screen flex flex-col antialiased bg-grid-pattern relative">
 
-  <!-- ==================== HEADER ==================== -->
-  <header class="border-b border-slate-800 bg-[#0f172a]/90 backdrop-blur sticky top-0 z-40">
-    <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+  <!-- Glow Background Effect (Subtle Top Accent) -->
+  <div class="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-64 bg-blue-600/10 blur-[120px] pointer-events-none -z-10"></div>
+
+  <!-- ==================== HEADER (Floating Island Style) ==================== -->
+  <header class="sticky top-3 z-50 px-4 mb-6">
+    <div class="max-w-4xl mx-auto h-14 px-3 sm:px-4 flex items-center justify-between rounded-2xl bg-[#0f1422]/80 backdrop-blur-md border border-white/10 shadow-xl shadow-black/20">
       
-      <!-- Logo -->
-      <a href="#" class="flex items-center space-x-2.5 font-bold text-white text-lg">
-        <span class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white text-sm">
-          <i class="fa-solid fa-brain"></i>
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-2.5 font-semibold text-white tracking-tight group">
+        <span class="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
+          <i class="fa-solid fa-compass"></i>
         </span>
-        <span>GomLuis <span class="text-blue-400">AI</span></span>
+        <span class="text-sm sm:text-base font-bold">GomLuis <span class="text-blue-400 font-mono text-xs px-1.5 py-0.5 rounded bg-blue-950/80 border border-blue-800/50">HUB</span></span>
       </a>
 
-      <!-- Main Tabs (3 Simple Views) -->
-      <nav class="flex items-center bg-slate-800/80 p-1 rounded-xl border border-slate-700/60 text-xs sm:text-sm font-medium">
+      <!-- Main Navigation Tabs (Taste-Skill Segment Control) -->
+      <nav class="flex items-center p-1 rounded-xl bg-slate-900/90 border border-white/5 text-xs font-medium">
         <button onclick="switchMainTab('links')" id="tabBtn-links" 
-                class="px-3.5 py-1.5 rounded-lg transition-all bg-blue-600 text-white shadow">
-          <i class="fa-solid fa-link mr-1"></i> 링크 모음
+                class="taste-btn px-3 py-1.5 rounded-lg transition-all bg-blue-600 text-white font-semibold shadow-sm shadow-blue-500/30 flex items-center gap-1.5">
+          <i class="fa-solid fa-link text-[11px]"></i>
+          <span>링크</span>
         </button>
         <button onclick="switchMainTab('notes')" id="tabBtn-notes" 
-                class="px-3.5 py-1.5 rounded-lg transition-all text-slate-400 hover:text-white">
-          <i class="fa-solid fa-book-open mr-1"></i> 공부 노트
+                class="taste-btn px-3 py-1.5 rounded-lg transition-all text-slate-400 hover:text-slate-200 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-bookmark text-[11px]"></i>
+          <span>공부 노트</span>
         </button>
         <button onclick="switchMainTab('food')" id="tabBtn-food" 
-                class="px-3.5 py-1.5 rounded-lg transition-all text-slate-400 hover:text-white">
-          <i class="fa-solid fa-utensils mr-1"></i> 맛집 모음
+                class="taste-btn px-3 py-1.5 rounded-lg transition-all text-slate-400 hover:text-slate-200 flex items-center gap-1.5">
+          <i class="fa-solid fa-utensils text-[11px]"></i>
+          <span>맛집 모음</span>
         </button>
       </nav>
 
-      <!-- GitHub Icon -->
+      <!-- GitHub Profile Button -->
       <a href="https://github.com/gomluis" target="_blank" rel="noopener noreferrer" 
-         class="text-slate-400 hover:text-white transition-colors p-2 text-lg" title="GitHub 프로필">
-        <i class="fa-brands fa-github"></i>
+         class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/5 transition-all" 
+         title="GitHub 저장소 보기">
+        <i class="fa-brands fa-github text-base"></i>
       </a>
     </div>
   </header>
 
-  <!-- ==================== MAIN CONTENT AREA ==================== -->
-  <main class="flex-grow max-w-4xl mx-auto px-4 py-8 w-full">
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="flex-grow max-w-4xl mx-auto px-4 py-4 w-full">
 
     <!-- ========================================== -->
-    <!-- TAB 1: LINKS (DEFAULT & MINIMAL)           -->
+    <!-- TAB 1: LINKS & TOOLS (MINIMALIST CURATION) -->
     <!-- ========================================== -->
     <div id="view-links" class="space-y-6">
       
-      <!-- Simple Title & Search -->
-      <div class="text-center py-4">
-        <h1 class="text-2xl sm:text-3xl font-extrabold text-white mb-2">AI 자료 & 유용한 링크</h1>
-        <p class="text-sm text-slate-400">자주 쓰는 인공지능 도구와 필수 사이트 모음</p>
-
-        <!-- Search Bar -->
-        <div class="max-w-lg mx-auto relative mt-5">
-          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-          <input type="text" id="searchInput" 
-                 placeholder="이름이나 키워드 검색 (예: GPT, 강의, 파이토치)..." 
-                 class="w-full pl-10 pr-4 py-2.5 bg-slate-800/70 border border-slate-700 rounded-xl text-sm text-slate-100 placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-colors">
+      <!-- Hero Banner (Linear-inspired Typography) -->
+      <section class="py-6 px-1 text-center sm:text-left sm:flex sm:items-end sm:justify-between border-b border-white/[0.06] pb-6">
+        <div>
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[11px] font-mono text-blue-400 mb-2.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span>
+            Curated Knowledge Base
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            AI 도구 & 핵심 리소스
+          </h1>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1">
+            자주 활용하는 차세대 AI 모델, 개발 환경, 실전 튜토리얼 아카이브
+          </p>
         </div>
 
-        <!-- Category Buttons (Clean Pills) -->
-        <div class="flex flex-wrap justify-center gap-2 mt-4" id="categoryButtons">
+        <!-- Quick Stats Pill -->
+        <div class="hidden sm:flex items-center gap-3 text-xs font-mono text-slate-400">
+          <div class="px-3 py-1.5 rounded-lg bg-slate-900/80 border border-white/5">
+            <span class="text-blue-400 font-semibold" id="statsCount">8</span> items curated
+          </div>
+        </div>
+      </section>
+
+      <!-- Search & Category Filter Toolbar -->
+      <section class="space-y-3.5">
+        <!-- Search Input with Keyboard Cue -->
+        <div class="relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          <input type="text" id="searchInput" 
+                 placeholder="도구 이름, 기술 키워드, 내용 검색 (예: Claude, Colab, 영상편집)..." 
+                 class="w-full pl-9 pr-10 py-2.5 bg-slate-900/60 border border-white/10 rounded-xl text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500/60 focus:ring-1 focus:ring-blue-500/40 transition-all">
+          <button id="searchClear" onclick="clearSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-xs">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <!-- Filter Chips (Taste-Skill Rounded Pills) -->
+        <div class="flex flex-wrap items-center gap-1.5" id="categoryButtons">
           <!-- Rendered via JS -->
         </div>
-      </div>
+      </section>
 
       <!-- Links Grid -->
-      <div id="linksContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+      <section id="linksContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
         <!-- Rendered via JS -->
-      </div>
+      </section>
 
-      <!-- Empty State -->
-      <div id="emptySearch" class="hidden text-center py-12 text-slate-500 text-sm">
-        검색 결과가 없습니다.
+      <!-- Empty Search Result -->
+      <div id="emptySearch" class="hidden text-center py-16 text-slate-500 text-xs">
+        <i class="fa-solid fa-compass text-2xl mb-2 text-slate-600 block"></i>
+        검색 조건에 맞는 자료를 찾지 못했습니다.
       </div>
     </div>
 
     <!-- ========================================== -->
-    <!-- TAB 2: STUDY NOTES (DYNAMIC MARKDOWN)      -->
+    <!-- TAB 2: AI STUDY NOTES (DYNAMIC MARKDOWN)   -->
     <!-- ========================================== -->
-    <div id="view-notes" class="hidden space-y-4">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+    <div id="view-notes" class="hidden space-y-5">
+      
+      <!-- Notes Header -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-white/[0.06]">
         <div>
-          <h2 class="text-xl font-bold text-white flex items-center gap-2">
-            <i class="fa-solid fa-book-open text-blue-400"></i> AI 공부 노트
-          </h2>
-          <p class="text-xs text-slate-400 mt-1">
-            깃허브 <code class="text-blue-400 font-mono bg-slate-900 px-1 py-0.5 rounded">notes/</code> 폴더에 올라온 마크다운(.md) 문서를 자동으로 불러옵니다.
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[11px] font-mono text-blue-400 mb-2">
+            <i class="fa-solid fa-book-open"></i> Markdown Notes
+          </div>
+          <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">AI 실전 공부 노트</h2>
+          <p class="text-xs text-slate-400 mt-0.5">
+            깃허브 <code class="text-blue-400 font-mono bg-slate-900 px-1 py-0.5 rounded border border-white/5">notes/</code> 디렉토리의 분석 문서를 실시간 렌더링합니다.
           </p>
         </div>
         <div class="flex items-center gap-2">
-          <button onclick="loadMarkdownNotes(true)" class="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 px-2.5 py-1.5 rounded-lg border border-slate-700 transition-colors">
+          <button onclick="loadMarkdownNotes(true)" class="taste-btn inline-flex items-center gap-1.5 text-xs text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700/80 px-3 py-1.5 rounded-lg border border-white/10 transition-colors">
             <i class="fa-solid fa-rotate-right text-xs"></i> 새로고침
           </button>
           <a href="https://github.com/gomluis/gomluis.github.io/tree/main/notes" target="_blank" 
-             class="inline-flex items-center gap-1.5 text-xs text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg border border-slate-700 transition-colors">
+             class="taste-btn inline-flex items-center gap-1.5 text-xs text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700/80 px-3 py-1.5 rounded-lg border border-white/10 transition-colors">
             <i class="fa-solid fa-folder-open text-blue-400"></i> notes 폴더
           </a>
         </div>
@@ -189,32 +301,35 @@
 
       <!-- Dynamic Markdown Notes Container -->
       <div id="dynamicNotesContainer" class="space-y-3">
-        <div class="text-center py-12 text-slate-500 text-xs">
-          <i class="fa-solid fa-spinner fa-spin text-lg text-blue-500 mb-2"></i><br>
+        <div class="text-center py-16 text-slate-500 text-xs">
+          <i class="fa-solid fa-spinner fa-spin text-lg text-blue-400 mb-2.5 block"></i>
           깃허브에서 공부 노트를 불러오는 중입니다...
         </div>
       </div>
     </div>
 
     <!-- ========================================== -->
-    <!-- TAB 3: FOOD REVIEWS (DYNAMIC MARKDOWN)     -->
+    <!-- TAB 3: FOOD & LIFE ARCHIVE (WARM TASTE)   -->
     <!-- ========================================== -->
-    <div id="view-food" class="hidden space-y-4">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+    <div id="view-food" class="hidden space-y-5">
+      
+      <!-- Food Header -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-white/[0.06]">
         <div>
-          <h2 class="text-xl font-bold text-white flex items-center gap-2">
-            <i class="fa-solid fa-utensils text-amber-400"></i> 맛집 모음 & 리뷰
-          </h2>
-          <p class="text-xs text-slate-400 mt-1">
-            깃허브 <code class="text-amber-400 font-mono bg-slate-900 px-1 py-0.5 rounded">food/</code> 폴더에 올린 맛집 영상과 기록을 자동으로 불러옵니다.
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-[11px] font-mono text-amber-400 mb-2">
+            <i class="fa-solid fa-bowl-food"></i> Gourmet & Life
+          </div>
+          <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">맛집 모음 & 미식 기록</h2>
+          <p class="text-xs text-slate-400 mt-0.5">
+            깃허브 <code class="text-amber-400 font-mono bg-slate-900 px-1 py-0.5 rounded border border-white/5">food/</code> 디렉토리의 엄선된 맛집 영상을 모아둡니다.
           </p>
         </div>
         <div class="flex items-center gap-2">
-          <button onclick="loadFoodNotes(true)" class="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 px-2.5 py-1.5 rounded-lg border border-slate-700 transition-colors">
+          <button onclick="loadFoodNotes(true)" class="taste-btn inline-flex items-center gap-1.5 text-xs text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700/80 px-3 py-1.5 rounded-lg border border-white/10 transition-colors">
             <i class="fa-solid fa-rotate-right text-xs"></i> 새로고침
           </button>
           <a href="https://github.com/gomluis/gomluis.github.io/tree/main/food" target="_blank" 
-             class="inline-flex items-center gap-1.5 text-xs text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg border border-slate-700 transition-colors">
+             class="taste-btn inline-flex items-center gap-1.5 text-xs text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700/80 px-3 py-1.5 rounded-lg border border-white/10 transition-colors">
             <i class="fa-solid fa-folder-open text-amber-400"></i> food 폴더
           </a>
         </div>
@@ -222,8 +337,8 @@
 
       <!-- Dynamic Food Markdown Container -->
       <div id="dynamicFoodContainer" class="space-y-3">
-        <div class="text-center py-12 text-slate-500 text-xs">
-          <i class="fa-solid fa-spinner fa-spin text-lg text-amber-500 mb-2"></i><br>
+        <div class="text-center py-16 text-slate-500 text-xs">
+          <i class="fa-solid fa-spinner fa-spin text-lg text-amber-400 mb-2.5 block"></i>
           깃허브에서 맛집 기록을 불러오는 중입니다...
         </div>
       </div>
@@ -231,29 +346,108 @@
 
   </main>
 
-  <!-- ==================== SIMPLE FOOTER ==================== -->
-  <footer class="border-t border-slate-800/80 py-6 text-center text-xs text-slate-500">
-    <p>GomLuis AI Archive • Hosted on GitHub Pages</p>
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="mt-auto border-t border-white/[0.06] py-8 text-center text-xs text-slate-500">
+    <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <p class="font-mono text-[11px]">GomLuis Personal Hub • Refined with Taste Skill</p>
+      <div class="flex items-center gap-4 text-[11px] text-slate-400">
+        <a href="https://github.com/gomluis/gomluis.github.io" target="_blank" class="hover:text-blue-400 transition-colors">Source Code</a>
+        <span>•</span>
+        <span>GitHub Pages Hosted</span>
+      </div>
+    </div>
   </footer>
 
-  <!-- ==================== SCRIPT ==================== -->
+  <!-- ==================== LOGIC & SCRIPTS ==================== -->
   <script>
-    // 1. DATA: Clean curated list
+    // 1. DATA: Curated List
     const linksData = [
       // Recommended YouTube & Media
-      { name: "구글 안티그래비티 11월 대변신 가이드", category: "media", catName: "유튜브 영상", url: "https://www.youtube.com/watch?v=sLMj6HCperk", desc: "말로 시키고 /swarm으로 AI 팀을 꾸리는 구글 안티그래비티 핵심 업데이트 총정리", icon: "fa-brands fa-youtube" },
-      { name: "클로드 코드 한도 절약 5가지 팁", category: "media", catName: "유튜브 숏츠", url: "https://youtube.com/shorts/5HgN-Bw9bb8", desc: "터미널 AI 코딩 시 토큰과 한도 낭비를 막는 5가지 필수 명령어", icon: "fa-brands fa-youtube" },
-      { name: "클로드 코드로 AI 영상편집 자동화", category: "media", catName: "유튜브 영상", url: "https://www.youtube.com/watch?v=WqISVcMCHDI&list=PLC19JlQffqkA&index=1", desc: "프리미어 프로 없이 클로드 코드·Whisper·HyperFrames로 30초 인트로 영상 자동 제작 (스킬 공유)", icon: "fa-brands fa-youtube" },
-      { name: "모든 클로드 사용법 종결편 (지도 한 장 정리)", category: "media", catName: "유튜브 영상", url: "https://www.youtube.com/watch?v=FXmf7Du3564", desc: "대화창 하나에서 데스크톱 자동화·멀티 에이전트 팀까지 한눈에 보는 클로드 완벽 활용 지도 (혼잡스)", icon: "fa-brands fa-youtube" },
+      { 
+        name: "구글 안티그래비티 11월 대변신 가이드", 
+        category: "media", 
+        catName: "유튜브 영상", 
+        url: "https://www.youtube.com/watch?v=sLMj6HCperk", 
+        desc: "말로 시키고 /swarm으로 AI 팀을 꾸리는 구글 안티그래비티 핵심 업데이트 총정리", 
+        icon: "fa-brands fa-youtube",
+        accent: "text-red-400 bg-red-500/10 border-red-500/20"
+      },
+      { 
+        name: "클로드 코드 한도 절약 5가지 팁", 
+        category: "media", 
+        catName: "유튜브 숏츠", 
+        url: "https://youtube.com/shorts/5HgN-Bw9bb8", 
+        desc: "터미널 AI 코딩 시 토큰과 한도 낭비를 막는 5가지 필수 명령어", 
+        icon: "fa-brands fa-youtube",
+        accent: "text-red-400 bg-red-500/10 border-red-500/20"
+      },
+      { 
+        name: "클로드 코드로 AI 영상편집 자동화", 
+        category: "media", 
+        catName: "유튜브 영상", 
+        url: "https://www.youtube.com/watch?v=WqISVcMCHDI&list=PLC19JlQffqkA&index=1", 
+        desc: "프리미어 프로 없이 클로드 코드·Whisper·HyperFrames로 30초 인트로 영상 자동 제작 (스킬 공유)", 
+        icon: "fa-brands fa-youtube",
+        accent: "text-red-400 bg-red-500/10 border-red-500/20"
+      },
+      { 
+        name: "모든 클로드 사용법 종결편 (지도 한 장 정리)", 
+        category: "media", 
+        catName: "유튜브 영상", 
+        url: "https://www.youtube.com/watch?v=FXmf7Du3564", 
+        desc: "대화창 하나에서 데스크톱 자동화·멀티 에이전트 팀까지 한눈에 보는 클로드 완벽 활용 지도 (혼잡스)", 
+        icon: "fa-brands fa-youtube",
+        accent: "text-red-400 bg-red-500/10 border-red-500/20"
+      },
 
       // Models
-      { name: "ChatGPT", category: "models", catName: "AI 모델", url: "https://chatgpt.com", desc: "OpenAI 대화형 인공지능 (GPT-4o)", icon: "fa-bolt" },
-      { name: "Claude", category: "models", catName: "AI 모델", url: "https://claude.ai", desc: "Anthropic의 정교한 코딩 & 문서 분석 AI", icon: "fa-comment" },
-      { name: "Google AI Studio", category: "models", catName: "AI 모델", url: "https://aistudio.google.com", desc: "Gemini 모델 테스트 및 무료 API 발급", icon: "fa-wand-magic-sparkles" },
-      { name: "Hugging Face", category: "models", catName: "오픈소스", url: "https://huggingface.co", desc: "오픈소스 AI 모델, 데이터셋, 웹 데모", icon: "fa-face-smile" },
+      { 
+        name: "ChatGPT", 
+        category: "models", 
+        catName: "AI 모델", 
+        url: "https://chatgpt.com", 
+        desc: "OpenAI 대화형 인공지능 (GPT-4o)", 
+        icon: "fa-bolt",
+        accent: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20"
+      },
+      { 
+        name: "Claude", 
+        category: "models", 
+        catName: "AI 모델", 
+        url: "https://claude.ai", 
+        desc: "Anthropic의 정교한 코딩 & 문서 분석 AI", 
+        icon: "fa-comment",
+        accent: "text-amber-400 bg-amber-500/10 border-amber-500/20"
+      },
+      { 
+        name: "Google AI Studio", 
+        category: "models", 
+        catName: "AI 모델", 
+        url: "https://aistudio.google.com", 
+        desc: "Gemini 모델 테스트 및 무료 API 발급", 
+        icon: "fa-wand-magic-sparkles",
+        accent: "text-blue-400 bg-blue-500/10 border-blue-500/20"
+      },
+      { 
+        name: "Hugging Face", 
+        category: "models", 
+        catName: "오픈소스", 
+        url: "https://huggingface.co", 
+        desc: "오픈소스 AI 모델, 데이터셋, 웹 데모", 
+        icon: "fa-face-smile",
+        accent: "text-yellow-400 bg-yellow-500/10 border-yellow-500/20"
+      },
 
       // Tools
-      { name: "Google Colab", category: "tools", catName: "개발 도구", url: "https://colab.research.google.com", desc: "무료 클라우드 GPU 제공 주피터 노트북", icon: "fa-code" }
+      { 
+        name: "Google Colab", 
+        category: "tools", 
+        catName: "개발 도구", 
+        url: "https://colab.research.google.com", 
+        desc: "무료 클라우드 GPU 제공 주피터 노트북", 
+        icon: "fa-code",
+        accent: "text-orange-400 bg-orange-500/10 border-orange-500/20"
+      }
     ];
 
     const categories = [
@@ -266,14 +460,14 @@
     let currentCategory = "all";
     let searchQuery = "";
 
-    // TAB SWITCHING
+    // TAB SWITCHING (Taste-Skill Active Transition)
     window.switchMainTab = function(tabName) {
       ['links', 'notes', 'food'].forEach(t => {
         const view = document.getElementById(`view-${t}`);
         const btn = document.getElementById(`tabBtn-${t}`);
         if (t === tabName) {
           view.classList.remove('hidden');
-          btn.className = "px-3.5 py-1.5 rounded-lg transition-all bg-blue-600 text-white shadow";
+          btn.className = "taste-btn px-3 py-1.5 rounded-lg transition-all bg-blue-600 text-white font-semibold shadow-sm shadow-blue-500/30 flex items-center gap-1.5";
           if (tabName === 'notes') {
             loadMarkdownNotes();
           } else if (tabName === 'food') {
@@ -281,20 +475,20 @@
           }
         } else {
           view.classList.add('hidden');
-          btn.className = "px-3.5 py-1.5 rounded-lg transition-all text-slate-400 hover:text-white";
+          btn.className = "taste-btn px-3 py-1.5 rounded-lg transition-all text-slate-400 hover:text-slate-200 flex items-center gap-1.5";
         }
       });
     };
 
-    // DYNAMIC MARKDOWN NOTES LOADER
+    // DYNAMIC AI NOTES LOADER
     let notesLoaded = false;
     async function loadMarkdownNotes(force = false) {
       if (notesLoaded && !force) return;
       const container = document.getElementById("dynamicNotesContainer");
       container.innerHTML = `
-        <div class="text-center py-10 text-slate-500 text-xs">
-          <i class="fa-solid fa-spinner fa-spin text-base text-blue-500 mb-2"></i><br>
-          깃허브에서 최신 공부 노트를 불러오는 중입니다...
+        <div class="text-center py-16 text-slate-500 text-xs">
+          <i class="fa-solid fa-spinner fa-spin text-base text-blue-400 mb-2.5 block"></i>
+          깃허브에서 공부 노트를 불러오는 중입니다...
         </div>
       `;
 
@@ -310,8 +504,8 @@
 
         if (mdFiles.length === 0) {
           container.innerHTML = `
-            <div class="text-center py-12 bg-slate-800/30 rounded-xl border border-slate-700/60 text-slate-400 text-xs">
-              <i class="fa-regular fa-folder-open text-2xl text-slate-500 mb-2 block"></i>
+            <div class="text-center py-12 bg-slate-900/40 rounded-xl border border-white/5 text-slate-400 text-xs">
+              <i class="fa-regular fa-folder-open text-2xl text-slate-600 mb-2 block"></i>
               아직 등록된 마크다운(.md) 파일이 없습니다.<br>
               깃허브 <code class="text-blue-400 font-mono">notes/</code> 폴더에 파일을 추가해 보세요!
             </div>
@@ -324,7 +518,6 @@
           const rawRes = await fetch(file.download_url);
           const mdText = await rawRes.text();
 
-          // Extract title from first # line or filename
           const lines = mdText.split('\n');
           let title = file.name.replace(/\.md$/, '').replace(/^\d+[_]/, '');
           const firstHeader = lines.find(l => l.trim().startsWith('# '));
@@ -335,21 +528,21 @@
           const parsedHtml = (typeof marked !== 'undefined') ? marked.parse(mdText) : `<pre>${mdText}</pre>`;
 
           return `
-            <details class="group bg-slate-800/60 border border-slate-700/80 rounded-xl p-4 cursor-pointer" ${idx === 0 ? 'open' : ''}>
+            <details class="taste-card group bg-slate-900/50 hover:bg-slate-900/80 border border-white/[0.08] rounded-xl p-4 cursor-pointer transition-all" ${idx === 0 ? 'open' : ''}>
               <summary class="flex items-center justify-between font-semibold text-white list-none">
-                <span class="flex items-center gap-2 text-sm sm:text-base">
-                  <span class="w-6 h-6 rounded bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-mono">${idx + 1}</span>
-                  ${title}
+                <span class="flex items-center gap-2.5 text-sm sm:text-base">
+                  <span class="w-6 h-6 rounded-md bg-blue-500/15 text-blue-400 border border-blue-500/20 flex items-center justify-center text-xs font-mono">${idx + 1}</span>
+                  <span class="group-hover:text-blue-300 transition-colors">${title}</span>
                 </span>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 shrink-0">
                   <a href="${file.html_url}" target="_blank" onclick="event.stopPropagation()" 
-                     class="text-slate-400 hover:text-blue-400 text-xs px-2 py-0.5 rounded bg-slate-900 border border-slate-700 transition-colors" title="깃허브에서 원본 보기">
+                     class="text-slate-400 hover:text-white text-xs px-2.5 py-1 rounded-md bg-slate-800/80 hover:bg-slate-700/80 border border-white/5 transition-colors" title="깃허브에서 원본 보기">
                     <i class="fa-brands fa-github mr-1"></i>원본
                   </a>
                   <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-open:rotate-180 transition-transform"></i>
                 </div>
               </summary>
-              <div class="markdown-content mt-4 text-xs sm:text-sm text-slate-300 leading-relaxed pt-3 border-t border-slate-700/60">
+              <div class="markdown-content mt-4 text-xs sm:text-sm text-slate-300 leading-relaxed pt-3 border-t border-white/[0.06]">
                 ${parsedHtml}
               </div>
             </details>
@@ -361,7 +554,7 @@
       } catch (err) {
         console.error("Notes load error:", err);
         container.innerHTML = `
-          <div class="p-4 bg-amber-950/30 border border-amber-800/50 rounded-xl text-xs text-amber-300">
+          <div class="p-4 bg-amber-950/20 border border-amber-800/40 rounded-xl text-xs text-amber-300">
             <i class="fa-solid fa-triangle-exclamation mr-1.5"></i>
             깃허브에서 노트를 불러오지 못했습니다. (API 한도 초과 또는 로컬 환경)<br>
             <a href="https://github.com/${owner}/${repo}/tree/main/notes" target="_blank" class="underline mt-1 inline-block text-amber-200">
@@ -378,8 +571,8 @@
       if (foodLoaded && !force) return;
       const container = document.getElementById("dynamicFoodContainer");
       container.innerHTML = `
-        <div class="text-center py-10 text-slate-500 text-xs">
-          <i class="fa-solid fa-spinner fa-spin text-base text-amber-500 mb-2"></i><br>
+        <div class="text-center py-16 text-slate-500 text-xs">
+          <i class="fa-solid fa-spinner fa-spin text-base text-amber-400 mb-2.5 block"></i>
           깃허브에서 맛집 기록을 불러오는 중입니다...
         </div>
       `;
@@ -396,8 +589,8 @@
 
         if (mdFiles.length === 0) {
           container.innerHTML = `
-            <div class="text-center py-12 bg-slate-800/30 rounded-xl border border-slate-700/60 text-slate-400 text-xs">
-              <i class="fa-solid fa-utensils text-2xl text-amber-500/50 mb-2 block"></i>
+            <div class="text-center py-12 bg-slate-900/40 rounded-xl border border-white/5 text-slate-400 text-xs">
+              <i class="fa-solid fa-utensils text-2xl text-amber-500/40 mb-2 block"></i>
               아직 등록된 맛집 기록(.md)이 없습니다.<br>
               깃허브 <code class="text-amber-400 font-mono">food/</code> 폴더에 파일을 추가해 보세요!
             </div>
@@ -420,21 +613,21 @@
           const parsedHtml = (typeof marked !== 'undefined') ? marked.parse(mdText) : `<pre>${mdText}</pre>`;
 
           return `
-            <details class="group bg-slate-800/60 border border-slate-700/80 rounded-xl p-4 cursor-pointer" ${idx === 0 ? 'open' : ''}>
+            <details class="taste-card group bg-slate-900/50 hover:bg-slate-900/80 border border-white/[0.08] rounded-xl p-4 cursor-pointer transition-all" ${idx === 0 ? 'open' : ''}>
               <summary class="flex items-center justify-between font-semibold text-white list-none">
-                <span class="flex items-center gap-2 text-sm sm:text-base">
-                  <span class="w-6 h-6 rounded bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-mono">${idx + 1}</span>
-                  ${title}
+                <span class="flex items-center gap-2.5 text-sm sm:text-base">
+                  <span class="w-6 h-6 rounded-md bg-amber-500/15 text-amber-400 border border-amber-500/20 flex items-center justify-center text-xs font-mono">${idx + 1}</span>
+                  <span class="group-hover:text-amber-300 transition-colors">${title}</span>
                 </span>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 shrink-0">
                   <a href="${file.html_url}" target="_blank" onclick="event.stopPropagation()" 
-                     class="text-slate-400 hover:text-amber-400 text-xs px-2 py-0.5 rounded bg-slate-900 border border-slate-700 transition-colors" title="깃허브에서 원본 보기">
+                     class="text-slate-400 hover:text-white text-xs px-2.5 py-1 rounded-md bg-slate-800/80 hover:bg-slate-700/80 border border-white/5 transition-colors" title="깃허브에서 원본 보기">
                     <i class="fa-brands fa-github mr-1"></i>원본
                   </a>
                   <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-open:rotate-180 transition-transform"></i>
                 </div>
               </summary>
-              <div class="markdown-content mt-4 text-xs sm:text-sm text-slate-300 leading-relaxed pt-3 border-t border-slate-700/60">
+              <div class="markdown-content mt-4 text-xs sm:text-sm text-slate-300 leading-relaxed pt-3 border-t border-white/[0.06]">
                 ${parsedHtml}
               </div>
             </details>
@@ -446,7 +639,7 @@
       } catch (err) {
         console.error("Food notes load error:", err);
         container.innerHTML = `
-          <div class="p-4 bg-amber-950/30 border border-amber-800/50 rounded-xl text-xs text-amber-300">
+          <div class="p-4 bg-amber-950/20 border border-amber-800/40 rounded-xl text-xs text-amber-300">
             <i class="fa-solid fa-triangle-exclamation mr-1.5"></i>
             깃허브에서 맛집 기록을 불러오지 못했습니다. (API 한도 초과 또는 로컬 환경)<br>
             <a href="https://github.com/${owner}/${repo}/tree/main/food" target="_blank" class="underline mt-1 inline-block text-amber-200">
@@ -462,10 +655,10 @@
       const container = document.getElementById("categoryButtons");
       container.innerHTML = categories.map(c => `
         <button onclick="setCategory('${c.id}')"
-                class="px-3 py-1 rounded-full text-xs transition-colors ${
+                class="taste-btn px-3 py-1 rounded-lg text-xs transition-all ${
                   currentCategory === c.id 
-                    ? 'bg-blue-600 text-white font-medium' 
-                    : 'bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-700/60'
+                    ? 'bg-blue-600/90 text-white font-medium shadow-sm shadow-blue-500/20 border border-blue-500/40' 
+                    : 'bg-slate-900/60 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-white/[0.06]'
                 }">
           ${c.label}
         </button>
@@ -478,10 +671,17 @@
       renderLinks();
     };
 
-    // RENDER LINKS
+    // RENDER LINKS (Linear/Taste-Skill Style Clean Cards)
     function renderLinks() {
       const container = document.getElementById("linksContainer");
       const emptyState = document.getElementById("emptySearch");
+      const clearBtn = document.getElementById("searchClear");
+
+      if (searchQuery.length > 0) {
+        clearBtn.classList.remove("hidden");
+      } else {
+        clearBtn.classList.add("hidden");
+      }
 
       const filtered = linksData.filter(item => {
         const matchesCategory = currentCategory === "all" || item.category === currentCategory;
@@ -490,6 +690,8 @@
           item.desc.toLowerCase().includes(searchQuery.toLowerCase());
         return matchesCategory && matchesSearch;
       });
+
+      document.getElementById("statsCount").textContent = filtered.length;
 
       if (filtered.length === 0) {
         container.innerHTML = "";
@@ -500,30 +702,62 @@
       emptyState.classList.add("hidden");
       container.innerHTML = filtered.map(item => `
         <a href="${item.url}" target="_blank" rel="noopener noreferrer" 
-           class="clean-card block p-4 bg-slate-800/50 hover:bg-slate-800/90 border border-slate-700/70 rounded-xl group">
+           class="taste-card block p-4 bg-slate-900/40 hover:bg-slate-900/80 border border-white/[0.07] rounded-xl group relative overflow-hidden">
+          
           <div class="flex items-start justify-between gap-3">
             <div class="flex items-start gap-3">
-              <div class="w-9 h-9 rounded-lg bg-slate-700/60 flex items-center justify-center text-slate-300 text-sm group-hover:bg-blue-600 group-hover:text-white transition-colors shrink-0">
+              <!-- Brand Accent Icon Box -->
+              <div class="w-9 h-9 rounded-lg flex items-center justify-center text-sm border shrink-0 transition-transform group-hover:scale-105 ${item.accent || 'text-blue-400 bg-blue-500/10 border-blue-500/20'}">
                 <i class="${item.icon.includes(' ') ? item.icon : 'fa-solid ' + item.icon}"></i>
               </div>
+              
+              <!-- Content -->
               <div>
                 <div class="flex items-center gap-2">
-                  <h3 class="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">${item.name}</h3>
-                  <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-900 text-slate-400">${item.catName}</span>
+                  <h3 class="text-xs sm:text-sm font-semibold text-white group-hover:text-blue-400 transition-colors leading-snug">
+                    ${item.name}
+                  </h3>
+                  <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-white/5">
+                    ${item.catName}
+                  </span>
                 </div>
-                <p class="text-xs text-slate-400 mt-1 line-clamp-2 sm:line-clamp-3 leading-relaxed">${item.desc}</p>
+                <p class="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">
+                  ${item.desc}
+                </p>
               </div>
             </div>
-            <i class="fa-solid fa-arrow-up-right-from-square text-xs text-slate-500 group-hover:text-blue-400 transition-colors pt-1"></i>
+
+            <!-- External Link Arrow -->
+            <div class="text-slate-500 group-hover:text-blue-400 transition-all pt-0.5 shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+              <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i>
+            </div>
           </div>
         </a>
       `).join("");
     }
 
-    // SEARCH LISTENER
+    // SEARCH LISTENER & CLEAR
     document.getElementById("searchInput").addEventListener("input", (e) => {
       searchQuery = e.target.value.trim();
       renderLinks();
+    });
+
+    window.clearSearch = function() {
+      const input = document.getElementById("searchInput");
+      input.value = "";
+      searchQuery = "";
+      renderLinks();
+      input.focus();
+    };
+
+    // Keyboard Shortcut (Press '/' to search, 'Esc' to clear)
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "/" && document.activeElement !== document.getElementById("searchInput")) {
+        e.preventDefault();
+        document.getElementById("searchInput").focus();
+      } else if (e.key === "Escape" && document.activeElement === document.getElementById("searchInput")) {
+        clearSearch();
+      }
     });
 
     // INIT
@@ -532,4 +766,3 @@
   </script>
 </body>
 </html>
-
