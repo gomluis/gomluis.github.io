@@ -36,6 +36,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
+  <!-- Leaflet.js (Open-Source Dark Interactive Map) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
   <style>
     body {
       font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
@@ -66,6 +70,60 @@
     }
     .taste-btn:active {
       transform: scale(0.97);
+    }
+
+    /* Leaflet Dark Theme Customizations */
+    .leaflet-popup-content-wrapper {
+      background: #0f172a !important;
+      color: #f8fafc !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      border-radius: 0.75rem !important;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+      padding: 0 !important;
+    }
+    .leaflet-popup-content {
+      margin: 0.75rem 0.9rem !important;
+      line-height: 1.5 !important;
+      font-family: inherit !important;
+    }
+    .leaflet-popup-tip {
+      background: #0f172a !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    }
+    .leaflet-container {
+      background: #090d16 !important;
+      font-family: inherit !important;
+    }
+    /* Clean Dark Theme Filter for OpenStreetMap (No Watermark, 100% Free) */
+    .map-dark-tiles {
+      filter: invert(100%) hue-rotate(180deg) brightness(88%) contrast(90%) grayscale(20%);
+    }
+    .leaflet-control-zoom a {
+      background-color: #0f172a !important;
+      color: #cbd5e1 !important;
+      border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+    .leaflet-control-zoom a:hover {
+      background-color: #1e293b !important;
+      color: #fff !important;
+    }
+    .custom-food-pin {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      background: #f59e0b;
+      color: #000;
+      border-radius: 50%;
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.75), 0 4px 6px rgba(0,0,0,0.4);
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .custom-food-pin:hover {
+      transform: scale(1.25);
     }
 
     /* Details Smooth Marker & Polish */
@@ -335,6 +393,26 @@
         </div>
       </div>
 
+      <!-- Taste-Skill Interactive Dark Map Section -->
+      <section class="space-y-2.5">
+        <div class="flex items-center justify-between text-xs px-1">
+          <span class="text-slate-300 font-medium flex items-center gap-2">
+            <i class="fa-solid fa-map-location-dot text-amber-400"></i>
+            <span>부평 로컬 맛집 지도</span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/25">4곳 등록됨</span>
+          </span>
+          <button onclick="resetFoodMap()" class="taste-btn text-[11px] text-slate-400 hover:text-amber-300 transition-colors flex items-center gap-1">
+            <i class="fa-solid fa-arrows-rotate text-[10px]"></i>
+            <span>지도 중앙 정렬</span>
+          </button>
+        </div>
+
+        <!-- Map Container -->
+        <div class="h-64 sm:h-72 w-full rounded-2xl overflow-hidden border border-white/10 shadow-xl shadow-black/40 relative bg-[#090d16]">
+          <div id="foodMap" class="w-full h-full z-10"></div>
+        </div>
+      </section>
+
       <!-- Dynamic Food Markdown Container -->
       <div id="dynamicFoodContainer" class="space-y-3">
         <div class="text-center py-16 text-slate-500 text-xs">
@@ -472,6 +550,7 @@
             loadMarkdownNotes();
           } else if (tabName === 'food') {
             loadFoodNotes();
+            initFoodMap();
           }
         } else {
           view.classList.add('hidden');
@@ -759,6 +838,142 @@
         clearSearch();
       }
     });
+
+    // ==========================================
+    // 4. INTERACTIVE FOOD MAP (Leaflet.js Dark)
+    // ==========================================
+    const foodPlaces = [
+      {
+        id: "yeonboseong",
+        name: "연보성",
+        category: "초가성비 노포 중식",
+        lat: 37.4975,
+        lon: 126.7302,
+        address: "인천 부평구 부흥로334번길 63 (부평동)",
+        menu: "초가성비 짜장면 · 짬뽕 · 탕수육",
+        tip: "생전 처음 보는 착한 가격의 노포 중화요리 (그린바틀TV)",
+        kakaoUrl: "https://map.kakao.com/link/search/부평 연보성",
+        naverUrl: "https://map.naver.com/p/search/부평 연보성"
+      },
+      {
+        id: "junghwagak",
+        name: "중화각",
+        category: "부평 짬뽕 3대장",
+        lat: 37.4966,
+        lon: 126.7258,
+        address: "인천 부평구 부흥로304번길 22 (부평시장 골목)",
+        menu: "고추짬뽕 원탑 · 매운짜장",
+        tip: "묵직하고 진한 칼칼한 불맛, 밥 말아먹기 필수 (김짬뽕 추천)",
+        kakaoUrl: "https://map.kakao.com/link/search/부평 중화각",
+        naverUrl: "https://map.naver.com/p/search/부평 중화각"
+      },
+      {
+        id: "ppongnaru",
+        name: "뽕나루",
+        category: "부평 짬뽕 3대장",
+        lat: 37.4973,
+        lon: 126.7316,
+        address: "인천 부평구 부흥로360번길 7 (부흥오거리)",
+        menu: "깔끔하고 깊은 불맛 짬뽕 · 차돌짬뽕",
+        tip: "불향 가득 볶아낸 해산물, 속 편하고 개운한 국물 (김짬뽕 추천)",
+        kakaoUrl: "https://map.kakao.com/link/search/부평 뽕나루",
+        naverUrl: "https://map.naver.com/p/search/부평 뽕나루"
+      },
+      {
+        id: "bokhwaru",
+        name: "복화루",
+        category: "부평 짬뽕 3대장",
+        lat: 37.4942,
+        lon: 126.7247,
+        address: "인천 부평구 부평문화로 77 (문화의거리)",
+        menu: "3대 전통 화상 노포 짬뽕 · 간짜장",
+        tip: "자극적이지 않고 은은하게 깊은 감칠맛의 정통 짬뽕 (김짬뽕 추천)",
+        kakaoUrl: "https://map.kakao.com/link/search/부평 복화루",
+        naverUrl: "https://map.naver.com/p/search/부평 복화루"
+      }
+    ];
+
+    let foodMapInstance = null;
+    let foodMarkers = {};
+
+    function initFoodMap() {
+      const mapContainer = document.getElementById("foodMap");
+      if (!mapContainer) return;
+
+      if (foodMapInstance) {
+        setTimeout(() => foodMapInstance.invalidateSize(), 150);
+        return;
+      }
+
+      // Center around Bupyeong market & Station
+      foodMapInstance = L.map("foodMap", {
+        center: [37.4965, 126.7280],
+        zoom: 15,
+        zoomControl: true,
+        scrollWheelZoom: false
+      });
+
+      // OpenStreetMap Tile Layer with CSS Dark Filter (100% Free, No Watermark)
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        className: 'map-dark-tiles',
+        maxZoom: 19
+      }).addTo(foodMapInstance);
+
+      // Custom Amber Pin Markers
+      foodPlaces.forEach(place => {
+        const customIcon = L.divIcon({
+          className: "custom-food-pin-wrapper",
+          html: `<div class="custom-food-pin" title="${place.name}">🍜</div>`,
+          iconSize: [30, 30],
+          iconAnchor: [15, 15],
+          popupAnchor: [0, -16]
+        });
+
+        const popupContent = `
+          <div class="space-y-1.5 min-w-[210px] text-left">
+            <div class="flex items-center justify-between gap-2 border-b border-white/10 pb-1">
+              <strong class="text-sm font-bold text-amber-400">${place.name}</strong>
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300">${place.category}</span>
+            </div>
+            <p class="text-[11px] text-slate-300 leading-tight">📍 ${place.address}</p>
+            <p class="text-[11px] font-medium text-slate-200">⭐ ${place.menu}</p>
+            <p class="text-[10px] text-slate-400 leading-tight">${place.tip}</p>
+            <div class="pt-2 flex items-center gap-1.5">
+              <a href="${place.kakaoUrl}" target="_blank" class="px-2 py-1 rounded bg-yellow-400 hover:bg-yellow-300 text-black font-bold text-[10px] inline-flex items-center gap-1 transition-colors">
+                카카오맵 길찾기
+              </a>
+              <a href="${place.naverUrl}" target="_blank" class="px-2 py-1 rounded bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-[10px] inline-flex items-center gap-1 transition-colors">
+                네이버지도
+              </a>
+            </div>
+          </div>
+        `;
+
+        const marker = L.marker([place.lat, place.lon], { icon: customIcon })
+          .addTo(foodMapInstance)
+          .bindPopup(popupContent);
+
+        foodMarkers[place.id] = marker;
+      });
+
+      setTimeout(() => foodMapInstance.invalidateSize(), 200);
+    }
+
+    window.resetFoodMap = function() {
+      if (foodMapInstance) {
+        foodMapInstance.setView([37.4965, 126.7280], 15);
+      }
+    };
+
+    window.focusPlaceOnMap = function(placeId) {
+      const place = foodPlaces.find(p => p.id === placeId);
+      if (place && foodMapInstance && foodMarkers[placeId]) {
+        foodMapInstance.flyTo([place.lat, place.lon], 17, { duration: 0.8 });
+        foodMarkers[placeId].openPopup();
+        document.getElementById("foodMap").scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    };
 
     // INIT
     renderCategoryButtons();
