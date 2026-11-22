@@ -126,6 +126,42 @@
       transform: scale(1.25);
     }
 
+    /* Rating Pin Markers (Score-based Color Coding) */
+    .rating-pin {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid #ffffff;
+      font-weight: 800;
+      font-size: 11px;
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .rating-pin:hover {
+      transform: scale(1.25);
+    }
+    /* 4.5 ~ 5.0 (Bright Lime Green) */
+    .rating-pin-high {
+      background: #22c55e;
+      color: #ffffff;
+      box-shadow: 0 0 18px rgba(34, 197, 94, 0.85), 0 4px 6px rgba(0,0,0,0.5);
+    }
+    /* 2.1 ~ 4.4 (Yellow / Amber) */
+    .rating-pin-mid {
+      background: #eab308;
+      color: #000000;
+      box-shadow: 0 0 18px rgba(234, 179, 8, 0.85), 0 4px 6px rgba(0,0,0,0.5);
+    }
+    /* 0.0 ~ 2.0 (Red) */
+    .rating-pin-low {
+      background: #ef4444;
+      color: #ffffff;
+      box-shadow: 0 0 18px rgba(239, 68, 68, 0.85), 0 4px 6px rgba(0,0,0,0.5);
+    }
+
     /* Details Smooth Marker & Polish */
     details > summary::-webkit-details-marker {
       display: none;
@@ -256,6 +292,11 @@
                 class="taste-btn px-3 py-1.5 rounded-lg transition-all text-slate-400 hover:text-slate-200 flex items-center gap-1.5">
           <i class="fa-solid fa-utensils text-[11px]"></i>
           <span>맛집 모음</span>
+        </button>
+        <button onclick="switchMainTab('ratings')" id="tabBtn-ratings" 
+                class="taste-btn px-3 py-1.5 rounded-lg transition-all text-slate-400 hover:text-slate-200 flex items-center gap-1.5">
+          <i class="fa-solid fa-star text-[11px] text-yellow-400"></i>
+          <span>맛집 평점</span>
         </button>
       </nav>
 
@@ -422,6 +463,71 @@
       </div>
     </div>
 
+    <!-- ========================================== -->
+    <!-- TAB 4: FOOD RATINGS & HONEST REVIEWS       -->
+    <!-- ========================================== -->
+    <div id="view-ratings" class="hidden space-y-5">
+      
+      <!-- Ratings Header -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-white/[0.06]">
+        <div>
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[11px] font-mono text-emerald-400 mb-2">
+            <i class="fa-solid fa-star text-yellow-400"></i> Honest Ratings & Map
+          </div>
+          <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">맛집 평점 & 솔직 후기</h2>
+          <p class="text-xs text-slate-400 mt-0.5">
+            직접 다녀온 후 매긴 5점 만점 별점과 솔직한 평가를 지도와 함께 기록합니다.
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="loadRatingNotes(true)" class="taste-btn inline-flex items-center gap-1.5 text-xs text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700/80 px-3 py-1.5 rounded-lg border border-white/10 transition-colors">
+            <i class="fa-solid fa-rotate-right text-xs"></i> 새로고침
+          </button>
+          <a href="https://github.com/gomluis/gomluis.github.io/tree/main/ratings" target="_blank" 
+             class="taste-btn inline-flex items-center gap-1.5 text-xs text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700/80 px-3 py-1.5 rounded-lg border border-white/10 transition-colors">
+            <i class="fa-solid fa-folder-open text-emerald-400"></i> ratings 폴더
+          </a>
+        </div>
+      </div>
+
+      <!-- Rating Map Section with Color Legend -->
+      <section class="space-y-2.5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs px-1">
+          <!-- Legend Badges (Score Color Guide) -->
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-slate-400 font-medium text-[11px]">평점 핀 기준:</span>
+            <span class="inline-flex items-center gap-1.5 text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-medium">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span> 4.5 ~ 5.0 밝은연두 (인생맛집)
+            </span>
+            <span class="inline-flex items-center gap-1.5 text-[11px] px-2 py-0.5 rounded-full bg-yellow-500/15 text-yellow-300 border border-yellow-500/30 font-medium">
+              <span class="w-2 h-2 rounded-full bg-yellow-400"></span> 2.1 ~ 4.4 노란색 (추천/무난)
+            </span>
+            <span class="inline-flex items-center gap-1.5 text-[11px] px-2 py-0.5 rounded-full bg-red-500/15 text-red-400 border border-red-500/30 font-medium">
+              <span class="w-2 h-2 rounded-full bg-red-400"></span> 0.0 ~ 2.0 빨간색 (아쉬움)
+            </span>
+          </div>
+
+          <button onclick="resetRatingMap()" class="taste-btn text-[11px] text-slate-400 hover:text-emerald-300 transition-colors flex items-center gap-1 shrink-0 self-end sm:self-auto">
+            <i class="fa-solid fa-arrows-rotate text-[10px]"></i>
+            <span>지도 중앙 정렬</span>
+          </button>
+        </div>
+
+        <!-- Rating Map Container -->
+        <div class="h-64 sm:h-72 w-full rounded-2xl overflow-hidden border border-white/10 shadow-xl shadow-black/40 relative bg-[#090d16]">
+          <div id="ratingMap" class="w-full h-full z-10"></div>
+        </div>
+      </section>
+
+      <!-- Dynamic Ratings Markdown Container -->
+      <div id="dynamicRatingsContainer" class="space-y-3">
+        <div class="text-center py-16 text-slate-500 text-xs">
+          <i class="fa-solid fa-spinner fa-spin text-lg text-emerald-400 mb-2.5 block"></i>
+          깃허브에서 평점 후기를 불러오는 중입니다...
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <!-- ==================== FOOTER ==================== -->
@@ -540,7 +646,7 @@
 
     // TAB SWITCHING (Taste-Skill Active Transition)
     window.switchMainTab = function(tabName) {
-      ['links', 'notes', 'food'].forEach(t => {
+      ['links', 'notes', 'food', 'ratings'].forEach(t => {
         const view = document.getElementById(`view-${t}`);
         const btn = document.getElementById(`tabBtn-${t}`);
         if (t === tabName) {
@@ -551,6 +657,9 @@
           } else if (tabName === 'food') {
             loadFoodNotes();
             initFoodMap();
+          } else if (tabName === 'ratings') {
+            loadRatingNotes();
+            initRatingMap();
           }
         } else {
           view.classList.add('hidden');
@@ -723,6 +832,114 @@
             깃허브에서 맛집 기록을 불러오지 못했습니다. (API 한도 초과 또는 로컬 환경)<br>
             <a href="https://github.com/${owner}/${repo}/tree/main/food" target="_blank" class="underline mt-1 inline-block text-amber-200">
               👉 깃허브 food 폴더에서 직접 보기
+            </a>
+          </div>
+        `;
+      }
+    }
+
+    // DYNAMIC FOOD RATINGS LOADER
+    let ratingsLoaded = false;
+    async function loadRatingNotes(force = false) {
+      if (ratingsLoaded && !force) return;
+      const container = document.getElementById("dynamicRatingsContainer");
+      container.innerHTML = `
+        <div class="text-center py-16 text-slate-500 text-xs">
+          <i class="fa-solid fa-spinner fa-spin text-base text-emerald-400 mb-2.5 block"></i>
+          깃허브에서 평점 후기를 불러오는 중입니다...
+        </div>
+      `;
+
+      const owner = "gomluis";
+      const repo = "gomluis.github.io";
+
+      try {
+        const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/ratings`);
+        if (!res.ok) throw new Error("GitHub API status " + res.status);
+        const files = await res.json();
+
+        const mdFiles = files.filter(f => f.name.endsWith('.md')).sort((a,b) => a.name.localeCompare(b.name));
+
+        if (mdFiles.length === 0) {
+          container.innerHTML = `
+            <div class="text-center py-12 bg-slate-900/40 rounded-xl border border-white/5 text-slate-400 text-xs">
+              <i class="fa-solid fa-star text-2xl text-emerald-500/40 mb-2 block"></i>
+              아직 등록된 맛집 평점 후기(.md)가 없습니다.<br>
+              깃허브 <code class="text-emerald-400 font-mono">ratings/</code> 폴더에 파일을 추가해 보세요!
+            </div>
+          `;
+          ratingsLoaded = true;
+          return;
+        }
+
+        const ratingCards = await Promise.all(mdFiles.map(async (file, idx) => {
+          const rawRes = await fetch(file.download_url);
+          const mdText = await rawRes.text();
+
+          const lines = mdText.split('\n');
+          let title = file.name.replace(/\.md$/, '').replace(/^\d+[_]/, '');
+          const firstHeader = lines.find(l => l.trim().startsWith('# '));
+          if (firstHeader) {
+            title = firstHeader.replace(/^#\s+/, '').trim();
+          }
+
+          // Score Badge Extraction (e.g. 4.8)
+          let scoreBadgeHtml = '';
+          const scoreMatch = mdText.match(/평점\s*[:：]?\s*([0-5](?:\.\d+)?)/i) || file.name.match(/평점([0-5](?:\.\d+)?)/i);
+          if (scoreMatch) {
+            const sc = parseFloat(scoreMatch[1]);
+            let badgeClass = "bg-yellow-500/20 text-yellow-300 border-yellow-500/30";
+            let circleColor = "bg-yellow-400";
+            if (sc >= 4.5) {
+              badgeClass = "bg-emerald-500/20 text-emerald-400 border-emerald-500/30";
+              circleColor = "bg-emerald-400";
+            } else if (sc <= 2.0) {
+              badgeClass = "bg-red-500/20 text-red-400 border-red-500/30";
+              circleColor = "bg-red-400";
+            }
+            scoreBadgeHtml = `
+              <span class="inline-flex items-center gap-1 text-[11px] font-mono font-bold px-2 py-0.5 rounded-full border ${badgeClass}">
+                <span class="w-1.5 h-1.5 rounded-full ${circleColor}"></span>
+                ★ ${sc.toFixed(1)}
+              </span>
+            `;
+          }
+
+          const parsedHtml = (typeof marked !== 'undefined') ? marked.parse(mdText) : `<pre>${mdText}</pre>`;
+
+          return `
+            <details class="taste-card group bg-slate-900/50 hover:bg-slate-900/80 border border-white/[0.08] rounded-xl p-4 cursor-pointer transition-all" ${idx === 0 ? 'open' : ''}>
+              <summary class="flex items-center justify-between font-semibold text-white list-none">
+                <span class="flex items-center gap-2.5 text-sm sm:text-base">
+                  <span class="w-6 h-6 rounded-md bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 flex items-center justify-center text-xs font-mono">${idx + 1}</span>
+                  <span class="group-hover:text-emerald-300 transition-colors">${title}</span>
+                  ${scoreBadgeHtml}
+                </span>
+                <div class="flex items-center gap-2 shrink-0">
+                  <a href="${file.html_url}" target="_blank" onclick="event.stopPropagation()" 
+                     class="text-slate-400 hover:text-white text-xs px-2.5 py-1 rounded-md bg-slate-800/80 hover:bg-slate-700/80 border border-white/5 transition-colors" title="깃허브에서 원본 보기">
+                    <i class="fa-brands fa-github mr-1"></i>원본
+                  </a>
+                  <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-open:rotate-180 transition-transform"></i>
+                </div>
+              </summary>
+              <div class="markdown-content mt-4 text-xs sm:text-sm text-slate-300 leading-relaxed pt-3 border-t border-white/[0.06]">
+                ${parsedHtml}
+              </div>
+            </details>
+          `;
+        }));
+
+        container.innerHTML = ratingCards.join('');
+        ratingsLoaded = true;
+      } catch (err) {
+        console.error("Rating notes load error:", err);
+        container.innerHTML = `
+          <div class="p-4 bg-emerald-950/20 border border-emerald-800/40 rounded-xl text-xs text-emerald-300">
+            <i class="fa-solid fa-triangle-exclamation mr-1.5"></i>
+            깃허브에서 평점 후기를 불러오지 못했습니다. (API 한도 초과 또는 깃허브 배포 전)<br>
+            <a href="https://github.com/${owner}/${repo}/tree/main/ratings" target="_blank" class="underline mt-1 inline-block text-emerald-200">
+              👉 깃허브 ratings 폴더에서 직접 보기
             </a>
           </div>
         `;
@@ -972,6 +1189,117 @@
         foodMapInstance.flyTo([place.lat, place.lon], 17, { duration: 0.8 });
         foodMarkers[placeId].openPopup();
         document.getElementById("foodMap").scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    };
+
+    // ==========================================
+    // 5. INTERACTIVE RATING MAP (Leaflet.js Dark)
+    // ==========================================
+    const ratingPlaces = [
+      {
+        id: "yeonboseong",
+        name: "연보성",
+        score: 4.8,
+        category: "초가성비 노포 중식",
+        lat: 37.4975,
+        lon: 126.7302,
+        address: "인천 부평구 부흥로334번길 63 (부평동 222-16)",
+        menu: "탕수육(소) · 짜장면 · 짬뽕",
+        comment: "상상초월 압도적 가성비! 100% 무조건 재방문",
+        kakaoUrl: "https://map.kakao.com/link/search/부평 연보성",
+        naverUrl: "https://map.naver.com/p/search/부평 연보성"
+      }
+    ];
+
+    let ratingMapInstance = null;
+    let ratingMarkers = {};
+
+    function initRatingMap() {
+      const mapContainer = document.getElementById("ratingMap");
+      if (!mapContainer) return;
+
+      if (ratingMapInstance) {
+        setTimeout(() => ratingMapInstance.invalidateSize(), 150);
+        return;
+      }
+
+      // Center around Bupyeong
+      ratingMapInstance = L.map("ratingMap", {
+        center: [37.4975, 126.7302],
+        zoom: 15,
+        zoomControl: true,
+        scrollWheelZoom: false
+      });
+
+      // OpenStreetMap Tile Layer with CSS Dark Filter (100% Free, No Watermark)
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        className: 'map-dark-tiles',
+        maxZoom: 19
+      }).addTo(ratingMapInstance);
+
+      // Score-based Colored Pin Markers
+      ratingPlaces.forEach(place => {
+        let pinClass = "rating-pin-mid";
+        let scoreLabel = "★ " + place.score.toFixed(1);
+        if (place.score >= 4.5) {
+          pinClass = "rating-pin-high";
+        } else if (place.score <= 2.0) {
+          pinClass = "rating-pin-low";
+        }
+
+        const customIcon = L.divIcon({
+          className: "custom-rating-pin-wrapper",
+          html: `<div class="rating-pin ${pinClass}" title="${place.name} (${place.score}점)">${place.score.toFixed(1)}</div>`,
+          iconSize: [32, 32],
+          iconAnchor: [16, 16],
+          popupAnchor: [0, -18]
+        });
+
+        const popupContent = `
+          <div class="space-y-1.5 min-w-[210px] text-left">
+            <div class="flex items-center justify-between gap-2 border-b border-white/10 pb-1">
+              <strong class="text-sm font-bold text-white">${place.name}</strong>
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded font-bold ${
+                place.score >= 4.5 ? 'bg-emerald-500/20 text-emerald-400' : (place.score <= 2.0 ? 'bg-red-500/20 text-red-400' : 'bg-yellow-500/20 text-yellow-300')
+              }">${scoreLabel}</span>
+            </div>
+            <p class="text-[11px] text-slate-300 leading-tight">📍 ${place.address}</p>
+            <p class="text-[11px] font-medium text-slate-200">🍴 ${place.menu}</p>
+            <p class="text-[10px] text-slate-400 leading-tight">💬 "${place.comment}"</p>
+            <div class="pt-2 flex items-center gap-1.5">
+              <a href="${place.kakaoUrl}" target="_blank" class="px-2 py-1 rounded bg-yellow-400 hover:bg-yellow-300 text-black font-bold text-[10px] inline-flex items-center gap-1 transition-colors">
+                카카오맵 길찾기
+              </a>
+              <a href="${place.naverUrl}" target="_blank" class="px-2 py-1 rounded bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-[10px] inline-flex items-center gap-1 transition-colors">
+                네이버지도
+              </a>
+            </div>
+          </div>
+        `;
+
+        const marker = L.marker([place.lat, place.lon], { icon: customIcon })
+          .addTo(ratingMapInstance)
+          .bindPopup(popupContent);
+
+        ratingMarkers[place.id] = marker;
+      });
+
+      setTimeout(() => ratingMapInstance.invalidateSize(), 200);
+    }
+
+    window.resetRatingMap = function() {
+      if (ratingMapInstance) {
+        ratingMapInstance.setView([37.4975, 126.7302], 15);
+      }
+    };
+
+    window.focusRatingPlaceOnMap = function(placeId) {
+      const place = ratingPlaces.find(p => p.id === placeId);
+      if (place && ratingMapInstance && ratingMarkers[placeId]) {
+        ratingMapInstance.flyTo([place.lat, place.lon], 17, { duration: 0.8 });
+        ratingMarkers[placeId].openPopup();
+        document.getElementById("ratingMap").scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     };
 
