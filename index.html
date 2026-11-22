@@ -1217,6 +1217,19 @@
         comment: "상상초월 압도적 가성비! 100% 무조건 재방문",
         kakaoUrl: "https://map.kakao.com/link/search/부평 연보성",
         naverUrl: "https://map.naver.com/p/search/부평 연보성"
+      },
+      {
+        id: "jjinmanine",
+        name: "찐만이네",
+        score: 3.5,
+        category: "작전시장 수제만두·분식",
+        lat: 37.5322,
+        lon: 126.7241,
+        address: "인천 계양구 봉오대로677번길 15-1 (작전시장)",
+        menu: "튀김만두 · 고기만두 · 떡볶이",
+        comment: "바삭하고 속 꽉 찬 수제 튀김만두! 튀김만두 생각날 때 들를 만하다",
+        kakaoUrl: "https://map.kakao.com/link/search/작전시장 찐만이네",
+        naverUrl: "https://map.naver.com/p/search/작전시장 찐만이네"
       }
     ];
 
@@ -1232,10 +1245,10 @@
         return;
       }
 
-      // Center around Bupyeong
+      // Center around Incheon (Bupyeong & Gyeyang)
       ratingMapInstance = L.map("ratingMap", {
-        center: [37.4975, 126.7302],
-        zoom: 15,
+        center: [37.5148, 126.7271],
+        zoom: 13,
         zoomControl: true,
         scrollWheelZoom: false
       });
@@ -1294,12 +1307,26 @@
         ratingMarkers[place.id] = marker;
       });
 
+      if (Object.keys(ratingMarkers).length > 0) {
+        try {
+          const group = new L.featureGroup(Object.values(ratingMarkers));
+          ratingMapInstance.fitBounds(group.getBounds().pad(0.3));
+        } catch (e) {
+          console.error("FitBounds error:", e);
+        }
+      }
+
       setTimeout(() => ratingMapInstance.invalidateSize(), 200);
     }
 
     window.resetRatingMap = function() {
       if (ratingMapInstance) {
-        ratingMapInstance.setView([37.4975, 126.7302], 15);
+        if (Object.keys(ratingMarkers).length > 0) {
+          const group = new L.featureGroup(Object.values(ratingMarkers));
+          ratingMapInstance.fitBounds(group.getBounds().pad(0.3));
+        } else {
+          ratingMapInstance.setView([37.5148, 126.7271], 13);
+        }
       }
     };
 
