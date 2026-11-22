@@ -384,17 +384,13 @@
           </div>
           <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">AI 실전 공부 노트</h2>
           <p class="text-xs text-slate-400 mt-0.5">
-            깃허브 <code class="text-blue-400 font-mono bg-slate-900 px-1 py-0.5 rounded border border-white/5">notes/</code> 디렉토리의 분석 문서를 실시간 렌더링합니다.
+            실전 AI 분석 문서와 핵심 요약 노트를 실시간 렌더링합니다.
           </p>
         </div>
         <div class="flex items-center gap-2">
           <button onclick="loadMarkdownNotes(true)" class="taste-btn inline-flex items-center gap-1.5 text-xs text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700/80 px-3 py-1.5 rounded-lg border border-white/10 transition-colors">
             <i class="fa-solid fa-rotate-right text-xs"></i> 새로고침
           </button>
-          <a href="https://github.com/gomluis/gomluis.github.io/tree/main/notes" target="_blank" 
-             class="taste-btn inline-flex items-center gap-1.5 text-xs text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700/80 px-3 py-1.5 rounded-lg border border-white/10 transition-colors">
-            <i class="fa-solid fa-folder-open text-blue-400"></i> notes 폴더
-          </a>
         </div>
       </div>
 
@@ -420,17 +416,13 @@
           </div>
           <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">맛집 모음 & 미식 기록</h2>
           <p class="text-xs text-slate-400 mt-0.5">
-            깃허브 <code class="text-amber-400 font-mono bg-slate-900 px-1 py-0.5 rounded border border-white/5">food/</code> 디렉토리의 엄선된 맛집 영상을 모아둡니다.
+            엄선된 로컬 맛집 추천 영상과 미식 기록을 모아둡니다.
           </p>
         </div>
         <div class="flex items-center gap-2">
           <button onclick="loadFoodNotes(true)" class="taste-btn inline-flex items-center gap-1.5 text-xs text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700/80 px-3 py-1.5 rounded-lg border border-white/10 transition-colors">
             <i class="fa-solid fa-rotate-right text-xs"></i> 새로고침
           </button>
-          <a href="https://github.com/gomluis/gomluis.github.io/tree/main/food" target="_blank" 
-             class="taste-btn inline-flex items-center gap-1.5 text-xs text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700/80 px-3 py-1.5 rounded-lg border border-white/10 transition-colors">
-            <i class="fa-solid fa-folder-open text-amber-400"></i> food 폴더
-          </a>
         </div>
       </div>
 
@@ -483,10 +475,6 @@
           <button onclick="loadRatingNotes(true)" class="taste-btn inline-flex items-center gap-1.5 text-xs text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700/80 px-3 py-1.5 rounded-lg border border-white/10 transition-colors">
             <i class="fa-solid fa-rotate-right text-xs"></i> 새로고침
           </button>
-          <a href="https://github.com/gomluis/gomluis.github.io/tree/main/ratings" target="_blank" 
-             class="taste-btn inline-flex items-center gap-1.5 text-xs text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700/80 px-3 py-1.5 rounded-lg border border-white/10 transition-colors">
-            <i class="fa-solid fa-folder-open text-emerald-400"></i> ratings 폴더
-          </a>
         </div>
       </div>
 
@@ -732,10 +720,6 @@
                   <span class="group-hover:text-blue-300 transition-colors">${title}</span>
                 </span>
                 <div class="flex items-center gap-2 shrink-0">
-                  <a href="${file.html_url}" target="_blank" onclick="event.stopPropagation()" 
-                     class="text-slate-400 hover:text-white text-xs px-2.5 py-1 rounded-md bg-slate-800/80 hover:bg-slate-700/80 border border-white/5 transition-colors" title="깃허브에서 원본 보기">
-                    <i class="fa-brands fa-github mr-1"></i>원본
-                  </a>
                   <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-open:rotate-180 transition-transform"></i>
                 </div>
               </summary>
@@ -753,10 +737,7 @@
         container.innerHTML = `
           <div class="p-4 bg-amber-950/20 border border-amber-800/40 rounded-xl text-xs text-amber-300">
             <i class="fa-solid fa-triangle-exclamation mr-1.5"></i>
-            깃허브에서 노트를 불러오지 못했습니다. (API 한도 초과 또는 로컬 환경)<br>
-            <a href="https://github.com/${owner}/${repo}/tree/main/notes" target="_blank" class="underline mt-1 inline-block text-amber-200">
-              👉 깃허브 notes 폴더에서 직접 보기
-            </a>
+            공부 노트를 불러오지 못했습니다. 잠시 후 새로고침해 주세요.
           </div>
         `;
       }
@@ -817,10 +798,6 @@
                   <span class="group-hover:text-amber-300 transition-colors">${title}</span>
                 </span>
                 <div class="flex items-center gap-2 shrink-0">
-                  <a href="${file.html_url}" target="_blank" onclick="event.stopPropagation()" 
-                     class="text-slate-400 hover:text-white text-xs px-2.5 py-1 rounded-md bg-slate-800/80 hover:bg-slate-700/80 border border-white/5 transition-colors" title="깃허브에서 원본 보기">
-                    <i class="fa-brands fa-github mr-1"></i>원본
-                  </a>
                   <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-open:rotate-180 transition-transform"></i>
                 </div>
               </summary>
@@ -838,10 +815,7 @@
         container.innerHTML = `
           <div class="p-4 bg-amber-950/20 border border-amber-800/40 rounded-xl text-xs text-amber-300">
             <i class="fa-solid fa-triangle-exclamation mr-1.5"></i>
-            깃허브에서 맛집 기록을 불러오지 못했습니다. (API 한도 초과 또는 로컬 환경)<br>
-            <a href="https://github.com/${owner}/${repo}/tree/main/food" target="_blank" class="underline mt-1 inline-block text-amber-200">
-              👉 깃허브 food 폴더에서 직접 보기
-            </a>
+            맛집 기록을 불러오지 못했습니다. 잠시 후 새로고침해 주세요.
           </div>
         `;
       }
@@ -925,10 +899,6 @@
                   ${scoreBadgeHtml}
                 </span>
                 <div class="flex items-center gap-2 shrink-0">
-                  <a href="${file.html_url}" target="_blank" onclick="event.stopPropagation()" 
-                     class="text-slate-400 hover:text-white text-xs px-2.5 py-1 rounded-md bg-slate-800/80 hover:bg-slate-700/80 border border-white/5 transition-colors" title="깃허브에서 원본 보기">
-                    <i class="fa-brands fa-github mr-1"></i>원본
-                  </a>
                   <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-open:rotate-180 transition-transform"></i>
                 </div>
               </summary>
@@ -946,10 +916,7 @@
         container.innerHTML = `
           <div class="p-4 bg-emerald-950/20 border border-emerald-800/40 rounded-xl text-xs text-emerald-300">
             <i class="fa-solid fa-triangle-exclamation mr-1.5"></i>
-            깃허브에서 평점 후기를 불러오지 못했습니다. (API 한도 초과 또는 깃허브 배포 전)<br>
-            <a href="https://github.com/${owner}/${repo}/tree/main/ratings" target="_blank" class="underline mt-1 inline-block text-emerald-200">
-              👉 깃허브 ratings 폴더에서 직접 보기
-            </a>
+            평점 후기를 불러오지 못했습니다. 잠시 후 새로고침해 주세요.
           </div>
         `;
       }
@@ -1206,19 +1173,6 @@
     // ==========================================
     const ratingPlaces = [
       {
-        id: "yeonboseong",
-        name: "연보성",
-        score: 4.8,
-        category: "초가성비 노포 중식",
-        lat: 37.4975,
-        lon: 126.7302,
-        address: "인천 부평구 부흥로334번길 63 (부평동 222-16)",
-        menu: "탕수육(소) · 짜장면 · 짬뽕",
-        comment: "상상초월 압도적 가성비! 100% 무조건 재방문",
-        kakaoUrl: "https://map.kakao.com/link/search/부평 연보성",
-        naverUrl: "https://map.naver.com/p/search/부평 연보성"
-      },
-      {
         id: "jjinmanine",
         name: "찐만이네",
         score: 3.5,
@@ -1245,10 +1199,10 @@
         return;
       }
 
-      // Center around Incheon (Bupyeong & Gyeyang)
+      // Center around Jjinmanine (Jakjeon Market)
       ratingMapInstance = L.map("ratingMap", {
-        center: [37.5148, 126.7271],
-        zoom: 13,
+        center: [37.5322, 126.7241],
+        zoom: 15,
         zoomControl: true,
         scrollWheelZoom: false
       });
@@ -1307,7 +1261,9 @@
         ratingMarkers[place.id] = marker;
       });
 
-      if (Object.keys(ratingMarkers).length > 0) {
+      if (ratingPlaces.length === 1) {
+        ratingMapInstance.setView([ratingPlaces[0].lat, ratingPlaces[0].lon], 15);
+      } else if (Object.keys(ratingMarkers).length > 1) {
         try {
           const group = new L.featureGroup(Object.values(ratingMarkers));
           ratingMapInstance.fitBounds(group.getBounds().pad(0.3));
@@ -1321,11 +1277,13 @@
 
     window.resetRatingMap = function() {
       if (ratingMapInstance) {
-        if (Object.keys(ratingMarkers).length > 0) {
+        if (ratingPlaces.length === 1) {
+          ratingMapInstance.setView([ratingPlaces[0].lat, ratingPlaces[0].lon], 15);
+        } else if (Object.keys(ratingMarkers).length > 1) {
           const group = new L.featureGroup(Object.values(ratingMarkers));
           ratingMapInstance.fitBounds(group.getBounds().pad(0.3));
         } else {
-          ratingMapInstance.setView([37.5148, 126.7271], 13);
+          ratingMapInstance.setView([37.5322, 126.7241], 15);
         }
       }
     };
