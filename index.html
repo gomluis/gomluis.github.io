@@ -125,6 +125,20 @@
     .custom-food-pin:hover {
       transform: scale(1.25);
     }
+    /* Active Pulsing Pin Animation on Map Focus */
+    .custom-food-pin.pin-active, .rating-pin.pin-active {
+      transform: scale(1.4) !important;
+      animation: pinActivePulse 1.2s infinite ease-in-out !important;
+      box-shadow: 0 0 28px rgba(245, 158, 11, 1), 0 0 10px #ffffff !important;
+      z-index: 9999 !important;
+    }
+    .rating-pin.pin-active {
+      box-shadow: 0 0 28px rgba(16, 185, 129, 1), 0 0 10px #ffffff !important;
+    }
+    @keyframes pinActivePulse {
+      0%, 100% { transform: scale(1.4); }
+      50% { transform: scale(1.6); }
+    }
 
     /* Rating Pin Markers (Score-based Color Coding) */
     .rating-pin {
@@ -788,7 +802,44 @@
             title = firstHeader.replace(/^#\s+/, '').trim();
           }
 
-          const parsedHtml = (typeof marked !== 'undefined') ? marked.parse(mdText) : `<pre>${mdText}</pre>`;
+          let parsedHtml = (typeof marked !== 'undefined') ? marked.parse(mdText) : `<pre>${mdText}</pre>`;
+
+          // Match foodPlaces mentioned in this review
+          const matchedPlaces = foodPlaces.filter(p => mdText.includes(p.name) || (p.aliases && p.aliases.some(a => mdText.includes(a))));
+
+          let quickMapBar = '';
+          if (matchedPlaces.length > 0) {
+            quickMapBar = `
+              <div class="flex flex-wrap items-center gap-1.5 mb-4 p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs">
+                <span class="text-[11px] font-semibold text-amber-300 flex items-center gap-1 shrink-0 mr-1">
+                  <i class="fa-solid fa-map-location-dot"></i>
+                  <span>지도 바로가기:</span>
+                </span>
+                ${matchedPlaces.map(p => `
+                  <button type="button" onclick="event.stopPropagation(); focusPlaceOnMap('${p.id}')"
+                          class="taste-btn px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/35 active:scale-95 text-amber-300 hover:text-amber-100 border border-amber-500/40 text-xs font-bold inline-flex items-center gap-1.5 transition-all shadow-sm cursor-pointer group/mapbtn"
+                          title="상단 지도에서 '${p.name}' 위치를 확인합니다">
+                    <span>📍 ${p.name}</span>
+                    <i class="fa-solid fa-arrow-up text-[9px] text-amber-400 group-hover/mapbtn:-translate-y-0.5 transition-transform"></i>
+                  </button>
+                `).join('')}
+              </div>
+            `;
+          }
+
+          // Linkify restaurant names inside parsedHtml:
+          matchedPlaces.forEach(p => {
+            const allNames = [p.name, ...(p.aliases || [])];
+            allNames.forEach(targetName => {
+              // 1. Quoted store name '가게이름' -> clickable badge
+              const quoteRegex = new RegExp(`['"]${targetName}['"]`, 'g');
+              parsedHtml = parsedHtml.replace(quoteRegex, `<button type="button" onclick="event.stopPropagation(); focusPlaceOnMap('${p.id}')" class="taste-btn inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/20 hover:bg-amber-500/35 text-amber-300 hover:text-amber-100 font-bold border border-amber-500/40 text-xs sm:text-sm cursor-pointer align-baseline transition-all shadow-sm" title="상단 지도에서 '${p.name}' 위치 보기">📍 ${targetName} <i class="fa-solid fa-arrow-up text-[9px] opacity-75"></i></button>`);
+
+              // 2. <strong>상호명</strong>: 가게이름
+              const shopRegex = new RegExp(`(<strong>(?:상호명|상호|가게명)<\\/strong>:\\s*)${targetName}`, 'g');
+              parsedHtml = parsedHtml.replace(shopRegex, `$1<button type="button" onclick="event.stopPropagation(); focusPlaceOnMap('${p.id}')" class="taste-btn inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/20 hover:bg-amber-500/35 text-amber-300 hover:text-amber-100 font-bold border border-amber-500/40 text-xs cursor-pointer align-baseline transition-all shadow-sm" title="상단 지도에서 '${p.name}' 위치 보기">📍 ${targetName} (지도 보기) <i class="fa-solid fa-arrow-up text-[9px] opacity-75"></i></button>`);
+            });
+          });
 
           return `
             <details class="taste-card group bg-slate-900/50 hover:bg-slate-900/80 border border-white/[0.08] rounded-xl p-4 cursor-pointer transition-all" ${idx === 0 ? 'open' : ''}>
@@ -802,6 +853,7 @@
                 </div>
               </summary>
               <div class="markdown-content mt-4 text-xs sm:text-sm text-slate-300 leading-relaxed pt-3 border-t border-white/[0.06]">
+                ${quickMapBar}
                 ${parsedHtml}
               </div>
             </details>
@@ -888,7 +940,42 @@
             `;
           }
 
-          const parsedHtml = (typeof marked !== 'undefined') ? marked.parse(mdText) : `<pre>${mdText}</pre>`;
+          let parsedHtml = (typeof marked !== 'undefined') ? marked.parse(mdText) : `<pre>${mdText}</pre>`;
+
+          // Match ratingPlaces mentioned in this review
+          const matchedPlaces = ratingPlaces.filter(p => mdText.includes(p.name) || (p.aliases && p.aliases.some(a => mdText.includes(a))));
+
+          let quickMapBar = '';
+          if (matchedPlaces.length > 0) {
+            quickMapBar = `
+              <div class="flex flex-wrap items-center gap-1.5 mb-4 p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs">
+                <span class="text-[11px] font-semibold text-emerald-300 flex items-center gap-1 shrink-0 mr-1">
+                  <i class="fa-solid fa-map-location-dot"></i>
+                  <span>지도 바로가기:</span>
+                </span>
+                ${matchedPlaces.map(p => `
+                  <button type="button" onclick="event.stopPropagation(); focusRatingPlaceOnMap('${p.id}')"
+                          class="taste-btn px-2.5 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/35 active:scale-95 text-emerald-300 hover:text-emerald-100 border border-emerald-500/40 text-xs font-bold inline-flex items-center gap-1.5 transition-all shadow-sm cursor-pointer group/mapbtn"
+                          title="상단 평점 지도에서 '${p.name}' 위치를 확인합니다">
+                    <span>📍 ${p.name}</span>
+                    <i class="fa-solid fa-arrow-up text-[9px] text-emerald-400 group-hover/mapbtn:-translate-y-0.5 transition-transform"></i>
+                  </button>
+                `).join('')}
+              </div>
+            `;
+          }
+
+          // Linkify store names in the body HTML
+          matchedPlaces.forEach(p => {
+            const allNames = [p.name, ...(p.aliases || [])];
+            allNames.forEach(targetName => {
+              const quoteRegex = new RegExp(`['"]${targetName}['"]`, 'g');
+              parsedHtml = parsedHtml.replace(quoteRegex, `<button type="button" onclick="event.stopPropagation(); focusRatingPlaceOnMap('${p.id}')" class="taste-btn inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-500/20 hover:bg-emerald-500/35 text-emerald-300 hover:text-emerald-100 font-bold border border-emerald-500/40 text-xs sm:text-sm cursor-pointer align-baseline transition-all shadow-sm" title="상단 평점 지도에서 '${p.name}' 위치 보기">📍 ${targetName} <i class="fa-solid fa-arrow-up text-[9px] opacity-75"></i></button>`);
+
+              const shopRegex = new RegExp(`(<strong>(?:상호명|상호|가게명)<\\/strong>:\\s*)${targetName}`, 'g');
+              parsedHtml = parsedHtml.replace(shopRegex, `$1<button type="button" onclick="event.stopPropagation(); focusRatingPlaceOnMap('${p.id}')" class="taste-btn inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-500/20 hover:bg-emerald-500/35 text-emerald-300 hover:text-emerald-100 font-bold border border-emerald-500/40 text-xs cursor-pointer align-baseline transition-all shadow-sm" title="상단 평점 지도에서 '${p.name}' 위치 보기">📍 ${targetName} (지도 보기) <i class="fa-solid fa-arrow-up text-[9px] opacity-75"></i></button>`);
+            });
+          });
 
           return `
             <details class="taste-card group bg-slate-900/50 hover:bg-slate-900/80 border border-white/[0.08] rounded-xl p-4 cursor-pointer transition-all" ${idx === 0 ? 'open' : ''}>
@@ -903,6 +990,7 @@
                 </div>
               </summary>
               <div class="markdown-content mt-4 text-xs sm:text-sm text-slate-300 leading-relaxed pt-3 border-t border-white/[0.06]">
+                ${quickMapBar}
                 ${parsedHtml}
               </div>
             </details>
@@ -1075,6 +1163,7 @@
       {
         id: "bokhwaru",
         name: "복화루",
+        aliases: ["복성루"],
         category: "부평 짬뽕 3대장",
         lat: 37.4942,
         lon: 126.7247,
@@ -1160,11 +1249,33 @@
     };
 
     window.focusPlaceOnMap = function(placeId) {
+      if (!foodMapInstance) {
+        initFoodMap();
+      }
       const place = foodPlaces.find(p => p.id === placeId);
       if (place && foodMapInstance && foodMarkers[placeId]) {
-        foodMapInstance.flyTo([place.lat, place.lon], 17, { duration: 0.8 });
-        foodMarkers[placeId].openPopup();
-        document.getElementById("foodMap").scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const mapEl = document.getElementById("foodMap");
+        if (mapEl) {
+          const headerOffset = 95;
+          const elementPosition = mapEl.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth"
+          });
+        }
+        setTimeout(() => {
+          foodMapInstance.invalidateSize();
+          foodMapInstance.flyTo([place.lat, place.lon], 17, { duration: 0.8 });
+          foodMarkers[placeId].openPopup();
+          
+          const pinEl = foodMarkers[placeId].getElement()?.querySelector('.custom-food-pin');
+          if (pinEl) {
+            document.querySelectorAll('.custom-food-pin').forEach(el => el.classList.remove('pin-active'));
+            pinEl.classList.add('pin-active');
+            setTimeout(() => pinEl.classList.remove('pin-active'), 3500);
+          }
+        }, 250);
       }
     };
 
@@ -1289,11 +1400,33 @@
     };
 
     window.focusRatingPlaceOnMap = function(placeId) {
+      if (!ratingMapInstance) {
+        initRatingMap();
+      }
       const place = ratingPlaces.find(p => p.id === placeId);
       if (place && ratingMapInstance && ratingMarkers[placeId]) {
-        ratingMapInstance.flyTo([place.lat, place.lon], 17, { duration: 0.8 });
-        ratingMarkers[placeId].openPopup();
-        document.getElementById("ratingMap").scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const mapEl = document.getElementById("ratingMap");
+        if (mapEl) {
+          const headerOffset = 95;
+          const elementPosition = mapEl.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth"
+          });
+        }
+        setTimeout(() => {
+          ratingMapInstance.invalidateSize();
+          ratingMapInstance.flyTo([place.lat, place.lon], 17, { duration: 0.8 });
+          ratingMarkers[placeId].openPopup();
+          
+          const pinEl = ratingMarkers[placeId].getElement()?.querySelector('.rating-pin');
+          if (pinEl) {
+            document.querySelectorAll('.rating-pin').forEach(el => el.classList.remove('pin-active'));
+            pinEl.classList.add('pin-active');
+            setTimeout(() => pinEl.classList.remove('pin-active'), 3500);
+          }
+        }, 250);
       }
     };
 
