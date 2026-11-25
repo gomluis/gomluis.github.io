@@ -446,7 +446,7 @@
           <span class="text-slate-300 font-medium flex items-center gap-2">
             <i class="fa-solid fa-map-location-dot text-amber-400"></i>
             <span>부평 로컬 맛집 지도</span>
-            <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/25">4곳 등록됨</span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/25">5곳 등록됨</span>
           </span>
           <button onclick="resetFoodMap()" class="taste-btn text-[11px] text-slate-400 hover:text-amber-300 transition-colors flex items-center gap-1">
             <i class="fa-solid fa-arrows-rotate text-[10px]"></i>
@@ -1178,6 +1178,19 @@
         tip: "자극적이지 않고 은은하게 깊은 감칠맛의 정통 짬뽕 (김짬뽕 추천)",
         kakaoUrl: "https://map.kakao.com/link/search/부평 복화루",
         naverUrl: "https://map.naver.com/p/search/부평 복화루"
+      },
+      {
+        id: "jincheon",
+        name: "진천토종청국장",
+        emoji: "🍲",
+        category: "부개동 백반 · 청국장",
+        lat: 37.504285,
+        lon: 126.733673,
+        address: "인천 부평구 길주남로101번길 11-4 (부개동 482-3)",
+        menu: "청국장 · 가정식백반 · 김치찌개",
+        tip: "우리집 근처에 없어서 아쉬운 구수한 집밥 스타일 백반 맛집 (그린바틀TV)",
+        kakaoUrl: "https://map.kakao.com/link/search/부개동 진천토종청국장",
+        naverUrl: "https://map.naver.com/p/search/부개동 진천토종청국장"
       }
     ];
 
@@ -1212,7 +1225,7 @@
       foodPlaces.forEach(place => {
         const customIcon = L.divIcon({
           className: "custom-food-pin-wrapper",
-          html: `<div class="custom-food-pin" title="${place.name}">🍜</div>`,
+          html: `<div class="custom-food-pin" title="${place.name}">${place.emoji || '🍜'}</div>`,
           iconSize: [30, 30],
           iconAnchor: [15, 15],
           popupAnchor: [0, -16]
